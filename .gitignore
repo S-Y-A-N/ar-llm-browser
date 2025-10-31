@@ -1,1 +1,5 @@
 .venv
+*.sh
+slurm
+all-lighteval-tasks.txt
+initial-evaluation/results
