@@ -1,7 +1,8 @@
 from transformers import pipeline
 import torch
+import json
 
-pipe = pipeline("text-generation", model="google/gemma-3-1b-it", device=1, dtype=torch.bfloat16)
+pipe = pipeline("text-generation", model="google/gemma-3-1b-it", device=0, dtype=torch.bfloat16)
 
 messages = [
     [
@@ -16,5 +17,6 @@ messages = [
     ],
 ]
 
-output = pipe(messages, max_new_tokens=100)
-print(output)
+output = pipe(messages, max_new_tokens=50)
+print(json.dumps(output, indent=2))
+print(torch.cuda.is_available())
