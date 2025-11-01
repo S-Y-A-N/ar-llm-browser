@@ -1,5 +1,14 @@
+# folders
 .venv
-*.sh
+.cache
 slurm
+init-eval/results
+init-eval/details-output
+__pycache__
+# temp - to be removed or changed
+utils
+tests
+init-eval/eval-results.py
+# files
+*.sh
 all-lighteval-tasks.txt
-initial-evaluation/results
