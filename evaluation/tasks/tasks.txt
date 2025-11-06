@@ -1,0 +1,23 @@
+# English
+
+leaderboard|hellaswag|0
+leaderboard|arc:challenge|0
+leaderboard|gsm8k|0
+leaderboard|truthfulqa:mc|0
+leaderboard|winogrande|0
+leaderboard|mmlu|0
+
+# Code
+
+extended|lcb:codegeneration|0
+
+# Arabic
+
+community|madinah_qa:Arabic Language (General)|0
+community|madinah_qa:Arabic Language (Grammar)|0
+community|aratrust:Trustfulness|0
+community|aratrust:Illegal|0
+community|arabic_exams|0
+community|acva:Bahrain|0
+community|acva:Arabic_Math|0
+community|arabic_mmlu:General Knowledge|0

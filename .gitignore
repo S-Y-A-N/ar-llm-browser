@@ -1,14 +1,17 @@
 # folders
 .venv
 .cache
-slurm
-init-eval/results
-init-eval/details-output
+.pytest_cache
 __pycache__
-# temp - to be removed or changed
-utils
+
+slurm
+evaluation/results
+evaluation/parsed_details
+
+# temporary: files to be removed from here after modifications
 tests
-init-eval/eval-results.py
+evaluation/parse_results_details.py
+
 # files
+.env
 *.sh
-all-lighteval-tasks.txt
