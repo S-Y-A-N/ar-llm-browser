@@ -56,7 +56,9 @@ def evaluate(model_config, tasks, max_samples=100):
       else:
         raise e
   else:
-    print(f"model='{model_name}' could not complete evaluation on batch_size={batch_size}.")
-      
+    print(f"model='{model_name}' could not complete evaluation.")
+    exit()
+    
   pipeline.show_results()
-  evaluation_tracker.save()
+  pipeline.save_and_push_results()
+  print("Evaluation Completed!")

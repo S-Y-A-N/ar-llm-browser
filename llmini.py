@@ -14,6 +14,7 @@ def main():
   parser.add_argument("model_config_file", help="- Specify a model's configuration YAML file (must contain 'name' and 'batch_size').")
   parser.add_argument("tasks", help="- Specify the evaluation tasks to run. Lighteval is the evaluation framewrok used. For task syntax and available tasks, refer to this page from Lighteval's documentation: https://huggingface.co/docs/lighteval/en/quicktour#task-specification")
   parser.add_argument("-s", "--samples", help="- Specify max samples for evaluation datasets.")
+  parser.add_argument("-b", "--batch", help="- Specify batch size (number of samples to run per iteration).")
   parser.add_argument("-q", "--quantize", help="- Apply quantization.")
   
   args = parser.parse_args()
@@ -24,7 +25,7 @@ def main():
     import yaml
     with open(args.model_config_file) as f:
       model_config = yaml.safe_load(f)
-    eval.evaluate(model_config, args.tasks, int(args.samples))
+    eval.evaluate(model_config, args.tasks, args.samples, args.batch)
     if args.quantize:
       quantized_model = apply_quantization(model_config)
       eval.evaluate(quantized_model)

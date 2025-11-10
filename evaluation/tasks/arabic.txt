@@ -1,16 +1,3 @@
-# English
-
-hellaswag|0
-arc:challenge|0
-gsm8k|0
-truthfulqa:mc|0
-winogrande|0
-mmlu|0
-
-# Code 
-
-#lcb:codegeneration|0
-
 # Arabic
 
 madinah_qa:Arabic Language (General)|0
