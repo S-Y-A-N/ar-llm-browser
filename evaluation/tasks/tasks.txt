@@ -7,7 +7,7 @@ truthfulqa:mc|0
 winogrande|0
 mmlu|0
 
-# Code 
+# Code
 
 #lcb:codegeneration|0
 
