@@ -3,9 +3,23 @@ from transformers import AutoModelForCausalLM
 from lighteval.logging.evaluation_tracker import EvaluationTracker
 from lighteval.models.transformers.transformers_model import TransformersModel, TransformersModelConfig
 from lighteval.pipeline import ParallelismManager, Pipeline, PipelineParameters
+
+import os
+from dotenv import load_dotenv
+load_dotenv()
+hf_org = os.getenv("HF_ORG")
+print("HF_ORG=", os.getenv("HF_ORG"))
    
-def evaluate(model_config, tasks, max_samples=100):
-  evaluation_tracker = EvaluationTracker(output_dir="./init-eval/results")
+def evaluate(model_config, tasks, max_samples=None, batch_size=1):
+  max_samples = None if max_samples == None else int(max_samples)
+  
+  evaluation_tracker = EvaluationTracker(
+    output_dir="./evaluation/results",
+    push_to_hub=True,
+    hub_results_org=hf_org,
+    
+  )
+  
   pipeline_params = PipelineParameters(
     launcher_type=ParallelismManager.ACCELERATE,
     max_samples=max_samples,
@@ -13,11 +27,13 @@ def evaluate(model_config, tasks, max_samples=100):
   )
   
   model_name = model_config['name']
-  batch_size = model_config['batch_size']
+  batch_size = model_config['batch_size'] if batch_size == None else int(batch_size)
     
   # initialize Transformers model
   tf_model = AutoModelForCausalLM.from_pretrained(
-    model_name, device_map="auto", dtype="auto"
+    model_name,
+    device_map="auto",
+    dtype="auto"
   )
   print(f"Model Name: {model_name}")
   print(f"Batch Size: {batch_size}")
