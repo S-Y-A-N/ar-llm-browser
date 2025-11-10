@@ -1,7 +1,8 @@
 # folders
-.venv
 .cache
 .pytest_cache
+.ruff_cache
+.venv
 __pycache__
 
 slurm
