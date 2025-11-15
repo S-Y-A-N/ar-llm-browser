@@ -5,19 +5,11 @@ arc:challenge|0
 gsm8k|0
 truthfulqa:mc|0
 winogrande|0
-mmlu|0
-
-# Code
-
-#lcb:codegeneration|0
 
 # Arabic
 
-madinah_qa:Arabic Language (General)|0
-madinah_qa:Arabic Language (Grammar)|0
-aratrust:Trustfulness|0
-aratrust:Illegal|0
+madinah_qa|0
+aratrust|0
 arabic_exams|0
-acva:Bahrain|0
-acva:Arabic_Math|0
-arabic_mmlu:General Knowledge|0
+acva|0
+arabic_mmlu|0
