@@ -15,6 +15,7 @@ load_dotenv()
 hf_org = os.getenv("HF_ORG")
 print("HF_ORG=", os.getenv("HF_ORG"))
 
+
 def parse_torch_dtype(dtype_str):
     # remove "torch." prefix if present
     name = dtype_str.split(".")[-1]
@@ -24,7 +25,7 @@ def parse_torch_dtype(dtype_str):
 def evaluate(model_config, tasks, max_samples=None, batch_size=1):
     gc.collect()
     torch.cuda.empty_cache()
-    max_samples = None if max_samples == None else int(max_samples)
+    max_samples = None if max_samples is None else int(max_samples)
 
     evaluation_tracker = EvaluationTracker(
         output_dir="./evaluation/results",
@@ -40,10 +41,10 @@ def evaluate(model_config, tasks, max_samples=None, batch_size=1):
 
     model_name = model_config["name"]
     torch_dtype = parse_torch_dtype(model_config["torch_dtype"])
-    batch_size = model_config["batch_size"] if batch_size == None else int(batch_size)
+    batch_size = model_config["batch_size"] if batch_size is None else int(batch_size)
 
     # initialize Transformers model
-    with torch.no_grad():            
+    with torch.no_grad():
         # dynamic batching to avoid CUDA OOM
         while batch_size >= 1:
             try:
@@ -53,13 +54,13 @@ def evaluate(model_config, tasks, max_samples=None, batch_size=1):
                     dtype=torch_dtype,
                     low_cpu_mem_usage=True,
                     trust_remote_code=True,
-                    use_cache=False
+                    use_cache=False,
                 )
                 print("Model Name:", model_name)
                 print("Batch Size:", batch_size)
                 print("Precision (dtype):", tf_model.config.dtype)
                 print("Model Instance:", tf_model)
-                
+
                 # in case of CUDA OOM, avoid rewrapping, only change BS
                 tf_model_config = TransformersModelConfig(
                     model_name=model_name,

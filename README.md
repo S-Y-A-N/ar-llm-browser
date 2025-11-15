@@ -10,7 +10,7 @@ This repository will contain our senior research project code, titled "Browser-b
 │   └── tasks
 │       └── tasks.txt # chosen evaluation tasks
 ├── models            # chosen models
-├── requirements.txt  # pip dependencies 
+├── requirements.txt  # pip dependencies
 └── llmini.py         # helper script to perform evaluation
 ```
 ## Getting Started
