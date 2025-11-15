@@ -1,0 +1,3 @@
+name: google/gemma-3-1b-it
+batch_size: 12
+torch_dtype: torch.float16

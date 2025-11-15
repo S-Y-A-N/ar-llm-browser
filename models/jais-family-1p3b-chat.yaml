@@ -1,0 +1,3 @@
+name: inceptionai/jais-family-1p3b-chat
+batch_size: 12
+torch_dtype: torch.float16

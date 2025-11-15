@@ -1,0 +1,15 @@
+# English
+
+hellaswag|0
+arc:challenge|0
+gsm8k|0
+truthfulqa:mc|0
+winogrande|0
+
+# Arabic
+
+madinah_qa|0
+aratrust|0
+arabic_exams|0
+acva|0
+arabic_mmlu|0

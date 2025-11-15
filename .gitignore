@@ -1,1 +1,18 @@
+# folders
+.cache
+.pytest_cache
+.ruff_cache
 .venv
+__pycache__
+
+slurm
+evaluation/results
+evaluation/parsed_details
+
+# temporary: files to be removed from here after modifications
+tests
+evaluation/parse_results_details.py
+
+# files
+.env
+*.sh
