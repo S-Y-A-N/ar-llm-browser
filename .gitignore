@@ -7,7 +7,8 @@ __pycache__
 
 slurm
 evaluation/results
-evaluation/parsed_details
+evaluation/figures
+
 
 # temporary: files to be removed from here after modifications
 tests

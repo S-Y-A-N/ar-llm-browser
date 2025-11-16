@@ -1,6 +1,8 @@
 # Arabic LLM in the Browser
 
-This repository will contain our senior research project code, titled "Browser-based Locally Hosted Arabic LLM Optimaization". You will find our implementation of LLM evaluation and model compression methods such as quantization here.
+This repository contains our senior research project code, titled "Browser-based Locally Hosted Arabic LLM Optimaization".
+
+You will find our implementation of LLM evaluation and model compression methods such as quantization here.
 
 ## File Structure
 
@@ -33,7 +35,7 @@ or you can run `chmod +x llmini.py` to make it an executable and run:
 ```bash
 ./llmini.py <path/to/model> <path/to/tasks> --options
 ```
-to find out about the available options, simple run `llmini.py` with `-h` or `--help`.
+to find out about the available options, simply run `llmini.py` with `-h` or `--help`.
 
 ## Contributing Notes
 
