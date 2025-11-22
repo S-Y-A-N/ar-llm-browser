@@ -8,7 +8,8 @@ You will find our implementation of LLM evaluation and model compression methods
 
 ```bash
 ├── evaluation
-│   ├── evaluate.py   # evaluation script
+│   ├── bench.py      # benchmarking script
+│   ├── evaluate.py   # tasks evaluation script
 │   └── tasks
 │       └── tasks.txt # chosen evaluation tasks
 ├── models            # chosen models

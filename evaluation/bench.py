@@ -23,6 +23,13 @@ def main():
         "model_config_file",
         help="- Specify a model's configuration YAML file (must contain 'name').",
     )
+    
+    # TODO pass model to a quantization function if this flag is used
+    parser.add_argument(
+        "-q",
+        "--quantize",
+        help="- Apply quantization from the precision specified in model config (usually float16) to the given parameter (int4, int8).",
+    )
 
     args = parser.parse_args()
     print(args)
@@ -35,15 +42,16 @@ def main():
 
     model_name = model_config["name"]
     torch_dtype = parse_torch_dtype(model_config["torch_dtype"])
-    bench(model_name, torch_dtype)
+    use_cache = model_config.get("use_cache", True)
+    bench(model_name, torch_dtype, use_cache)
 
 
-def bench(model_name, torch_dtype):
+def bench(model_name, torch_dtype, use_cache=True):
     device = "cuda"
     torch.cuda.reset_peak_memory_stats(device)
 
     model = AutoModelForCausalLM.from_pretrained(
-        model_name, dtype=torch_dtype, device_map=device, trust_remote_code=True
+        model_name, dtype=torch_dtype, device_map=device, trust_remote_code=True, use_cache=use_cache
     )
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -73,13 +81,12 @@ def bench(model_name, torch_dtype):
         inputs = tokenizer(prompt, return_tensors="pt").to(device)
 
         # warmup (ensures GPU kernels are initialized)
-        # TODO fix jais model error: past_length = past_key_values[0][0].size(-2) AttributeError: 'NoneType' object has no attribute 'size'
         outputs = model.generate(**inputs, max_new_tokens=64)
         torch.cuda.synchronize()
 
         start = time.time()
         outputs = model.generate(
-            **inputs, max_new_tokens=GEN_TOKENS, use_cache=model.config.use_cache
+            **inputs, max_new_tokens=GEN_TOKENS, use_cache=use_cache
         )
         torch.cuda.synchronize()
         end = time.time()
@@ -101,6 +108,10 @@ def bench(model_name, torch_dtype):
     mean_spt = np.mean(latency)
     std_spt = np.std(latency)
 
+    print(f"\nBenchamrk Results Summary:")
+    print(f"\nModel Name: {model_name}")
+    print(f"\nWeights Precision: {torch_dtype}")
+    print(f"\nModel VRAM usage: {vram_gb:.3f} GiB")
     print(f"\nAverage Throughput: {mean_tps:.2f} ± {std_tps:.2f} (tokens/sec)")
     print(f"\nAverage Latency: {mean_spt:.2f} ± {std_spt:.2f} (sec/token)")
 

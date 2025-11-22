@@ -29,7 +29,12 @@ def main():
         "--batch",
         help="- Specify batch size (number of samples to run per iteration).",
     )
-    parser.add_argument("-q", "--quantize", help="- Apply quantization.")
+    # TODO pass model to a quantization function if this flag is used
+    parser.add_argument(
+        "-q",
+        "--quantize",
+        help="- Apply quantization from the precision specified in model config (usually float16) to the given parameter (int4, int8).",
+    )
 
     args = parser.parse_args()
     print(args)
