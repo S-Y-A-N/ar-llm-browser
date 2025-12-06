@@ -23,9 +23,12 @@ You will find our implementation of LLM evaluation and model compression methods
 git clone https://github.com/S-Y-A-N/ar-llm-browser.git && cd ar-llm-browser
 ```
 
-2. Create a python virtual environment, then install the required pip dependencies.
+2. Create and activate a python virtual environment, then install the required pip dependencies.
 ```bash
-python -m venv .venv && pip install -r requirements.txt
+python -m venv .venv && source .venv/bin/activate
+```
+```bash
+pip install -r requirements.txt -e .
 ```
 
 3. If you want to run an evaluation, simply use the helper script `llmini.py`:

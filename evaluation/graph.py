@@ -1,62 +1,107 @@
+import argparse
 from datasets import load_dataset
 import matplotlib
 import matplotlib.pyplot as plt
 
-base_path = "evaluation/results/results"
-model_name = "google/gemma-3-1b-it"
-filename = "results_2025-11-15T22-41-45.271369.json"
 
-json_file = "/".join([base_path, model_name, filename])
+def main():
+    parser = argparse.ArgumentParser(
+        prog="graph",
+        description="%(prog)s is a command-line interface used to quickly graph a model's benchmark results.",
+    )
 
-results_json = load_dataset("json", data_files=json_file, split="train")
+    parser.add_argument(
+        "results_json",
+        help="- Sprecify results JSON file (results*.json).",
+    )
 
-benchmark_labels = {
-    "arabic_mmlu:_average|0": "Arabic MMLU",
-    "arabic_exams|0": "Arabic EXAMS",
-    "acva:_average|0": "AVCA",
-    "aratrust:_average|0": "AraTrust",
-    "madinah_qa:_average|0": "MadinahQA",
-}
+    args = parser.parse_args()
+    print(args)
 
-tasks = dict.fromkeys(
-    [
-        "arabic_mmlu:_average|0",
-        "arabic_exams|0",
-        "acva:_average|0",
-        "aratrust:_average|0",
-        "madinah_qa:_average|0",
-    ]
-)
+    if args.results_json:
+        results_json = args.results_json
 
-for task in tasks:
-    tasks[task] = float(next(iter(results_json["results"][task][0].values()))) * 100
-    print(f"{task:<25} {tasks[task]}")
+    graph(results_json)
 
 
-# Plotting bar chart
-matplotlib.use("agg")
-plt.style.use("grayscale")
+def graph(results_json):
+    results_json = load_dataset("json", data_files=results_json, split="train")
+    model_name = results_json["config_general"]["model_name"][0]
+    dtype = results_json["config_general"]["model_config"]["dtype"][0]
+    print("Model:", model_name)
+    print("Precision:", dtype)
 
-fig = plt.figure()
-num_bars = range(len(tasks))
-scores = list(tasks.values())
-xtick_labels = [benchmark_labels[k] for k in tasks.keys()]
+    benchmark_labels = {
+        "arabic_mmlu:_average|0": "Arabic MMLU",
+        "arabic_exams|0": "Arabic EXAMS",
+        "acva:_average|0": "ACVA",
+        "aratrust:_average|0": "AraTrust",
+        "madinah_qa:_average|0": "MadinahQA",
+        "arc:challenge|0": "ARC (Challenge)",
+        "hellaswag|0": "HellaSwag",
+        "gsm8k|0": "GSM8K",
+        "truthfulqa:mc|0": "TruthfulQA",
+        "winogrande|0": "WinoGrande",
+    }
 
-plt.bar(num_bars, scores, align="center", width=0.3)
-plt.xticks(num_bars, xtick_labels, ha="center", rotation=0)
-plt.ylim(0, 100)
-# Source - https://stackoverflow.com/a/53073502
-# Posted by Maroca, modified by community. See post 'Timeline' for change history
-# Retrieved 2025-11-16, License - CC BY-SA 4.0
+    tasks = dict.fromkeys(benchmark_labels.keys())
 
-for i, score in enumerate(scores):
-    plt.text(i, score + 1, f"{score:.2f}", ha="center")
+    sum_total, sum_ar, sum_en = 0, 0, 0
+    for i, task in enumerate(tasks):
+        tasks[task] = float(next(iter(results_json["results"][task][0].values()))) * 100
+        sum_total += tasks[task]
+        if i < 5:
+            sum_ar += tasks[task]
+        else:
+            sum_en += tasks[task]
+        print(f"{task:<25} {tasks[task]}")
+
+    avg_total = sum_total / 10
+    avg_ar = sum_ar / 5
+    avg_en = sum_en / 5
+
+    # Plotting bar chart
+    matplotlib.use("agg")
+    plt.style.use("grayscale")
+
+    fig_width = max(6, 1.2 * len(tasks))
+    fig = plt.figure(figsize=(fig_width, 4))
+    num_bars = range(len(tasks))
+    scores = list(tasks.values())
+    xtick_labels = [benchmark_labels[k] for k in tasks.keys()]
+
+    plt.bar(num_bars, scores, align="center", width=0.3)
+    plt.xticks(num_bars, xtick_labels, ha="center", rotation=0)
+    plt.ylim(0, 100)
+
+    for i, score in enumerate(scores):
+        plt.text(i, score + 1, f"{score:.2f}", ha="center")
+
+    plt.title(f"Benchmark Scores: {model_name} ({dtype})", fontweight="bold")
+    plt.xlabel("Benchmark", fontweight="bold")
+    plt.ylabel("Score", fontweight="bold")
+    plt.tight_layout()
+
+    avg_text = (
+        f"Arabic Avg:  {avg_ar:.2f}\n"
+        f"English Avg: {avg_en:.2f}\n"
+        f"Total Avg:   {avg_total:.2f}"
+    )
+
+    plt.gca().text(
+        0.01,
+        0.96,
+        avg_text,
+        transform=plt.gca().transAxes,
+        va="top",
+        ha="left",
+        fontsize=10,
+        bbox=dict(facecolor="white", alpha=0.7, edgecolor="none"),
+    )
+
+    model_name = model_name.replace(r"/", "__")
+    plt.savefig(f"evaluation/figures/{model_name}_{dtype}.png", dpi=fig.dpi)
 
 
-plt.title("Arabic Benchmark Scores", fontweight="bold")
-plt.xlabel("Benchmark", fontweight="bold")
-plt.ylabel("Score", fontweight="bold")
-plt.tight_layout()
-
-model_name = model_name.replace(r"/", "__")
-plt.savefig(f"evaluation/figures/{model_name}.png", dpi=fig.dpi)
+if __name__ == "__main__":
+    main()

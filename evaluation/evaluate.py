@@ -6,6 +6,7 @@ from lighteval.models.transformers.transformers_model import (
     TransformersModelConfig,
 )
 from lighteval.pipeline import ParallelismManager, Pipeline, PipelineParameters
+from utils.helpers import parse_torch_dtype
 
 import gc
 import os
@@ -13,14 +14,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 hf_org = os.getenv("HF_ORG")
-print("HF_ORG=", os.getenv("HF_ORG"))
-
-
-def parse_torch_dtype(dtype_str):
-    # remove "torch." prefix if present
-    name = dtype_str.split(".")[-1]
-    return getattr(torch, name)
-
+hf_home = os.getenv("HF_HOME")
+print("HF_ORG =", os.getenv("HF_ORG"))
 
 def evaluate(model_config, tasks, max_samples=None, batch_size=1):
     gc.collect()
@@ -39,9 +34,11 @@ def evaluate(model_config, tasks, max_samples=None, batch_size=1):
         load_tasks_multilingual=True,
     )
 
-    model_name = model_config["name"]
-    torch_dtype = parse_torch_dtype(model_config["torch_dtype"])
-    batch_size = model_config["batch_size"] if batch_size is None else int(batch_size)
+    model_name = model_config.get("name")
+    dtype = parse_torch_dtype(model_config.get("dtype"))
+    batch_size = (
+        model_config.get("batch_size", None) if batch_size is None else int(batch_size)
+    )
 
     # initialize Transformers model
     with torch.no_grad():
@@ -51,10 +48,9 @@ def evaluate(model_config, tasks, max_samples=None, batch_size=1):
                 tf_model = AutoModelForCausalLM.from_pretrained(
                     model_name,
                     device_map="auto",
-                    dtype=torch_dtype,
-                    low_cpu_mem_usage=True,
+                    dtype=dtype,
                     trust_remote_code=True,
-                    use_cache=False,
+                    use_cache=model_config.get("use_cache", True),
                 )
                 print("Model Name:", model_name)
                 print("Batch Size:", batch_size)
@@ -65,6 +61,8 @@ def evaluate(model_config, tasks, max_samples=None, batch_size=1):
                 tf_model_config = TransformersModelConfig(
                     model_name=model_name,
                     batch_size=batch_size,
+                    skip_special_tokens=True,
+                    cache_dir=hf_home,
                 )
                 tf_model = TransformersModel.from_model(tf_model, tf_model_config)
                 print(f"Transformers Model Instance: {tf_model}")
