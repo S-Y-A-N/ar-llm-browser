@@ -1,9 +1,9 @@
 model_parameters:
-    model_name: "google/gemma-3-1b-it"
+    model_name: "inceptionai/jais-family-590m-chat"
     dtype: "float16"
     batch_size: 16
     max_length: 1024
-    trust_remote_code: False        # default
+    trust_remote_code: True
     add_special_tokens: True        # default
     skip_special_tokens: True       # default
     compile: False                  # default
@@ -11,12 +11,12 @@ model_parameters:
     continuous_batching: False      # default
     generation_parameters:
         presence_penalty: 0.0
-        repetition_penalty: 1.0
+        repetition_penalty: 1.0 # 1.2
         frequency_penalty: 0.0
-        temperature: 0.0 # greedy for stable evaluation
+        temperature: 0.0 # greedy for stable evaluation, 0.3
         top_k: 64
         min_p: 0.0
-        top_p: 0.95
+        top_p: 0.9
         seed: 42
         stop_tokens: null
         max_new_tokens: 256
