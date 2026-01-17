@@ -1,0 +1,16 @@
+model: hf
+model_args:
+  pretrained: "inceptionai/jais-family-590m-chat"
+  dtype: float16
+
+trust_remote_code: true
+batch_size: auto:4
+device: cuda:0
+
+wandb_args:
+  project: lm-eval-results
+  name: jais-family-590m-chat
+  tags:
+    - jais
+    - base
+    - float16

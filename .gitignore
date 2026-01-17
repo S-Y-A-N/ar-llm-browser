@@ -4,17 +4,12 @@
 .ruff_cache
 .venv
 __pycache__
-ar_llm_browser.egg-info
+*.egg-info
 
 slurm
-evaluation/results
-evaluation/figures
-evaluation/parsed_details
-
-
-# temporary: files to be removed from here after modifications
-tests
-evaluation/parse_results_details.py
+wandb
+responses_cache
+results
 
 # files
 .env

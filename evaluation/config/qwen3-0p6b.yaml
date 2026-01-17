@@ -1,0 +1,16 @@
+model: hf
+model_args:
+  pretrained: "Qwen/Qwen3-0.6B"
+  dtype: float16
+
+batch_size: auto:4
+device: cuda:0
+
+wandb_args:
+  project: lm-eval-results
+  name: Qwen3-0.6B
+  tags:
+    - qwen
+    - base
+    - float16
+

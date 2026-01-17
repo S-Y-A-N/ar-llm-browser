@@ -1,12 +1,18 @@
 [project]
-name = "ar_llm_browser"
+name = "llmini"
 version = "0.1.0"
-description = "Setup for ar-llm-browser"
+description = "Code for \"Browser-based Locally Hosted Arabic LLM Optimization\"."
+readme = "README.md"
 requires-python = ">=3.10"
+dependencies = [
+    "lm-eval[hf]",
+]
 
-[build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+[tool.uv]
+cache-dir = ".cache/uv"
 
-[tool.setuptools]
-packages = ["utils"]
+[tool.uv.sources]
+lm-eval = { git = "https://github.com/EleutherAI/lm-evaluation-harness.git" }
+
+[project.scripts]
+llmini = "llmini.main:main"
