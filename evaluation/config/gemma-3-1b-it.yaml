@@ -1,0 +1,16 @@
+model: hf
+model_args:
+  pretrained: "google/gemma-3-1b-it"
+  dtype: float16
+
+batch_size: auto:4
+device: cuda:0
+
+wandb_args:
+  project: lm-eval-results
+  name: gemma-3-1b-it
+  tags:
+    - gemma
+    - base
+    - float16
+    

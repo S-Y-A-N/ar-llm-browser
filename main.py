@@ -1,28 +1,61 @@
-from transformers import pipeline
-import torch
-import json
+#!/usr/bin/env python3
+import argparse
+import os
+from dotenv import load_dotenv
 
-pipe = pipeline(
-    "text-generation", model="google/gemma-3-1b-it", device=0, dtype=torch.bfloat16
-)
+load_dotenv()
+print("HF_HOME=", os.getenv("HF_HOME"))
 
-messages = [
-    [
-        {
-            "role": "system",
-            "content": [
-                {"type": "text", "text": "You are a helpful assistant."},
-            ],
-        },
-        {
-            "role": "user",
-            "content": [
-                {"type": "text", "text": "Write a poem on Hugging Face, the company"},
-            ],
-        },
-    ],
-]
 
-output = pipe(messages, max_new_tokens=50)
-print(json.dumps(output, indent=2))
-print(torch.cuda.is_available())
+def main():
+    parser = argparse.ArgumentParser(
+        prog="llmini",
+        description="%(prog)s is a command-line interface used to quickly compress and evaluate LLMs in one go.",
+    )
+
+    parser.add_argument(
+        "model_config_file",
+        help="- Specify a model's configuration YAML file (must contain 'name' and 'batch_size').",
+    )
+    parser.add_argument(
+        "tasks",
+        help="- Specify the evaluation tasks to run. Lighteval is the evaluation framewrok used. For task syntax and available tasks, refer to this page from Lighteval's documentation: https://huggingface.co/docs/lighteval/en/quicktour#task-specification",
+    )
+    parser.add_argument(
+        "-s", "--samples", help="- Specify max samples for evaluation datasets."
+    )
+    parser.add_argument(
+        "-b",
+        "--batch",
+        help="- Specify batch size (number of samples to run per iteration).",
+    )
+    # TODO pass model to a quantization function if this flag is used
+    parser.add_argument(
+        "-q",
+        "--quantize",
+        help="- Apply quantization from the precision specified in model config (usually float16) to the given parameter (int4, int8).",
+    )
+
+    args = parser.parse_args()
+    print(args)
+
+    if args.model_config_file and args.tasks:
+        import evaluation.evaluate as eval
+        import yaml
+
+        with open(args.model_config_file) as f:
+            model_config = yaml.safe_load(f)
+        eval.evaluate(model_config, args.tasks, args.samples, args.batch)
+        if args.quantize:
+            quantized_model = apply_quantization(model_config)
+            eval.evaluate(quantized_model)
+    return
+
+
+def apply_quantization(model_config):
+    print("Applying quantization on {model_config.name}")
+    return
+
+
+if __name__ == "__main__":
+    main()

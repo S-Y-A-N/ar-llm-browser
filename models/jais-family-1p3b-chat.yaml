@@ -1,4 +1,0 @@
-name: inceptionai/jais-family-1p3b-chat
-batch_size: 12
-dtype: float16
-use_cache: False # workaround for caching issue in Jais
