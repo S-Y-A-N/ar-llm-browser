@@ -32,5 +32,4 @@ lm_eval --config evaluation/config/gemma-3-1b-it.yaml \ # path to YAML config fi
         --log_samples \
         --output_path results \
         --hf_hub_log_args hub_results_org=ar-llm-browser,details_repo_name=lm-eval-details,results_repo_name=lm-eval-results,push_results_to_hub=True,push_samples_to_hub=True,public_repo=False \ # set your own HF account to log results remotely or remove this line
-        --use_cache responses_cache/cache
 ```
