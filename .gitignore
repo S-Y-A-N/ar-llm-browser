@@ -10,6 +10,9 @@ slurm
 wandb
 responses_cache
 results
+scripts
+models
+data
 
 # files
 .env

@@ -1,0 +1,7 @@
+test_stage:
+  obcq_modifiers:
+    WandaPruningModifier:
+      sparsity: 0.5
+      targets: ["Linear"]
+      ignore: ["re:.*lm_head"]
+      sequential_targets: ["Gemma3DecoderLayer"]

@@ -5,14 +5,19 @@ description = "Code for \"Browser-based Locally Hosted Arabic LLM Optimization\"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "llmcompressor",
     "lm-eval[hf]",
 ]
 
 [tool.uv]
-cache-dir = ".cache/uv"
+package = true
 
 [tool.uv.sources]
 lm-eval = { git = "https://github.com/EleutherAI/lm-evaluation-harness.git" }
+llmcompressor = { git = "https://github.com/vllm-project/llm-compressor.git" }
 
 [project.scripts]
 llmini = "llmini.main:main"
+
+[tool.setuptools.packages.find]
+include = ["llmini"]
