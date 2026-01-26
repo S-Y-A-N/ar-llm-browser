@@ -44,7 +44,7 @@ def prune(
     Args:
         model_id: Model identifier on Hugging Face (e.g., `google/gemma-3-1b-it`)
         method: Pruning method. Supported: 'wanda', 'sparsegpt'
-        
+
     **Recipe Args:** Refer to [llmcompressor documentation](https://docs.vllm.ai/projects/llm-compressor/en/latest/reference/llmcompressor/modifiers/pruning/) for more information.
 
         Supported Arguments:
@@ -53,24 +53,24 @@ def prune(
             - **mask_structure:** String to define the structure of the mask to apply. Must be of the form N:M where N, M are integers that define a custom block shape. Defaults to 0:0 which represents an unstructured mask.
     """
     print(locals())
-    
+
     # create the pruned model directory name
-    recipe_str = f"{method}_{int(sparsity*100)}"
-    
+    recipe_str = f"{method}_{int(sparsity * 100)}"
+
     if mask_structure != "0:0":
         recipe_str += f"_{mask_structure.replace(':', 'of')}"
-        
+
     if sparsity_profile is not None:
         recipe_str += f"_{sparsity_profile}"
-        
+
     output_dir = f"models/{model_id}_{recipe_str}_" + datetime.now().strftime(
         "%Y-%m-%d_%H-%M-%S"
     )
-    
+
     # device information
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     logger.info(f"Using device: {device}")
-    
+
     # model information
     logger.info(f"Loading model: {model_id}")
     model = AutoModelForCausalLM.from_pretrained(model_id, dtype="auto")
@@ -78,12 +78,12 @@ def prune(
 
     # load tokenizer
     tokenizer = AutoTokenizer.from_pretrained(model_id)
-    
+
     # load calibration dataset
     dataset = load_calibration_dataset(
         DATASET_ID, DATA_FILES, num_samples=NUM_CALIBRATION_SAMPLES
     )
-    
+
     # infer sequential targets and create pruning recipe
     sequential_targets = get_block_name(model)
     logger.info(f"Sequential targets: {sequential_targets}")
@@ -108,6 +108,6 @@ def prune(
     )
     logger.info(f"Compressed model saved to: {output_dir}")
     logger.info(model)
-    
+
     # generate a sample by the pruned model
     validate(model, tokenizer)
