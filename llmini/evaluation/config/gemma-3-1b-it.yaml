@@ -1,0 +1,6 @@
+model: hf
+model_args:
+  pretrained: "google/gemma-3-1b-it"
+  dtype: float16
+
+batch_size: auto:4

@@ -1,8 +1,6 @@
 model: hf
 model_args:
-  pretrained: "Qwen/Qwen3-0.6B"
+  pretrained: "Navid-AI/Yehia-7B-preview"
   dtype: float16
 
 batch_size: auto:4
-
-
