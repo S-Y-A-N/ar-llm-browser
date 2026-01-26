@@ -18,10 +18,10 @@ def parse_args():
         "-q",
         "--quantize",
         choices=["int8", "int4"],
-        help="Apply a quantization format. Note: If pruning is specified, quantization is always applied first.",
+        help="Apply a quantization format.",
     )
 
-    prune_group = parser.add_argument_group('pruning options')
+    prune_group = parser.add_argument_group("pruning options")
     prune_group.add_argument(
         "--prune",
         "-p",
@@ -29,17 +29,16 @@ def parse_args():
         help="Choose a pruning algorithm.",
     )
     prune_group.add_argument(
-        "--recipe",
-        "-r",
+        "--prune-config",
         type=str,
-        help="Path to a pruning `llmcompressor` recipe YAML file.",
+        default={},
+        help="Specify pruning configuration as a comma-separated string. If not specified, defaults to unstructured 50%% sparsity. Example: --prune-config sparsity=0.7,mask_structure=2:4,sparsity_profile=owl",
     )
     
     args = parser.parse_args()
+    if args.prune_config and not args.prune:
+        parser.error("--prune-config cannot be used without --prune")
     
-    if args.prune and not args.recipe:
-        parser.error("--prune or -p requires --recipe or -r")
-
     return args
 
 
@@ -47,35 +46,36 @@ def main():
     args = parse_args()
 
     if args.model_id:
-        # quantize first
         if args.quantize:
             apply_quantization(args.model_id, args.quantize)
-            # then prune
-            if args.prune:
-                apply_pruning(args.model_id, args.prune, args.recipe)
-        # or prune without quantization
         elif args.prune:
-            apply_pruning(args.model_id, args.prune, args.recipe)
-    return
+            apply_pruning(args.model_id, args.prune, args.prune_config)
 
 
 def apply_quantization(model_id, format):
     print(f"Applying quantization format `{format}` on `{model_id}`")
-    return
 
 
-def apply_pruning(model_id: str, method: str, recipe_path: str):
+def apply_pruning(model_id: str, method: str, prune_config: str | None = None):
     """
     NOTE: currently, pruning `method` is not used.
-    
+
     Args:
         model_id: Hugging Face model identifier.
         method: Pruning method to apply ('sparsegpt', 'wanda').
         recipe_path: Path to `llmcompressor` pruning recipe.
     """
     print(f"Applying pruning method `{method}` on `{model_id}`")
+    
+    if prune_config:
+        prune_config = dict(
+            config.split("=", 1)
+            for config in prune_config.split(",")
+        )
+        
     from llmini.pruning.prune import prune
-    prune(model_id, recipe_path)
+    prune(model_id, method, **prune_config)
+
 
 if __name__ == "__main__":
     main()

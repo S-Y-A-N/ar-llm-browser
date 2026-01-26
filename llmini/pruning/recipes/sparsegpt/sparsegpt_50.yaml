@@ -1,9 +1,0 @@
-test_stage:
-  obcq_modifiers:
-    SparseGPTModifier:
-      sparsity: 0.5
-      dampening_frac: 0.01
-      block_size: 128
-      targets: ["Linear"]
-      ignore: ["re:.*lm_head"]
-      sequential_targets: ["Gemma3DecoderLayer"]
