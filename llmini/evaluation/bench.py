@@ -1,4 +1,4 @@
-# Inference Speed (Throughput [tokens/sec]) and VRAM usage
+# Inference Speed (Throughput [tokens/sec]) and model size in memory (VRAM usage)
 
 import torch.cuda
 import time
@@ -18,12 +18,15 @@ prompts = [
     "اشرح باختصار احتمال العثور على رمز مرور الصحيح إذا كان الرمز مكونًا من 6 أرقام تتراوح من 0 إلى 9.",
 ]
 
+
 def bench(model_id):
     device = "cuda"
     torch.cuda.empty_cache()
     torch.cuda.reset_peak_memory_stats(device)
 
-    model = AutoModelForCausalLM.from_pretrained(model_id, device_map=device, dtype=torch.float16)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id, device_map=device, dtype=torch.float16
+    )
     tokenizer = AutoTokenizer.from_pretrained(model_id)
 
     torch.cuda.synchronize()
@@ -42,9 +45,7 @@ def bench(model_id):
         torch.cuda.synchronize()
 
         start = time.time()
-        outputs = model.generate(
-            **inputs, max_new_tokens=GEN_TOKENS
-        )
+        outputs = model.generate(**inputs, max_new_tokens=GEN_TOKENS)
         torch.cuda.synchronize()
         end = time.time()
 
