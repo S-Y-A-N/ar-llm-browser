@@ -2,7 +2,6 @@ import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from llmcompressor import oneshot
-from llmcompressor.modifiers.pruning.sparsegpt import SparseGPTModifier
 
 from datetime import datetime
 from llmini.pruning.helpers import (
@@ -43,7 +42,7 @@ def prune(
 
     Args:
         model_id: Model identifier on Hugging Face (e.g., `google/gemma-3-1b-it`)
-        method: Pruning method. Supported: 'wanda', 'sparsegpt'
+        method: Pruning method. Supported: 'sparsegpt', 'wanda'
 
     **Recipe Args:** Refer to [llmcompressor documentation](https://docs.vllm.ai/projects/llm-compressor/en/latest/reference/llmcompressor/modifiers/pruning/) for more information.
 

@@ -2,7 +2,7 @@
 
 This repository contains the code for our senior research project, titled "Browser-based Locally Hosted Arabic LLM Optimaization".
 
-You will find our implementation of LLM evaluation and model compression methods such as quantization here.
+You will find our implementation of LLM evaluation and model compression methods such as quantization, pruning, and distillation here.
 
 ## Installation
 
@@ -12,7 +12,7 @@ You will find our implementation of LLM evaluation and model compression methods
     cd ar-llm-browser
     ```
 
-2. Install the dependencies using [uv](https://github.com/astral-sh/uv?tab=readme-ov-file#installation) (Recommended).
+2. Install the dependencies using [uv](https://github.com/astral-sh/uv?tab=readme-ov-file#installation) (recommended).
     ```sh
     uv sync
     ```
@@ -30,17 +30,19 @@ Example for running evaluation on `gemma-3-1b-it`:
 lm_eval --config evaluation/config/gemma-3-1b-it.yaml \ # path to YAML config file
         --tasks metabench arabicmmlu \
         --log_samples \
-        --output_path results \
-        --hf_hub_log_args hub_results_org=ar-llm-browser,details_repo_name=lm-eval-details,results_repo_name=lm-eval-results,push_results_to_hub=True,push_samples_to_hub=True,public_repo=False \ # set your own HF account to log results remotely or remove this line
-        --use_cache responses_cache/cache
+        --output_path results
 ```
+For the YAML config file structure, refer to the [configuration guide](https://github.com/EleutherAI/lm-evaluation-harness/blob/main/docs/config_files.md).<br>
+For a full list of arguments, refer to the [CLI reference](https://github.com/EleutherAI/lm-evaluation-harness/blob/main/docs/interface.md#lm-eval-run).
 
-## Compression Methods
+## Compression 
+
 All compression methods can be used via our command-line utility `llmini`.
 
 To view all available options, run `llmini --help`.
 
 ### Pruning
+
 To apply pruning to a model, run the following command:
 ```sh
 llmini google/gemma-3-1b-it # Path to model or HF model id

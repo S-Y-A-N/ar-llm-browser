@@ -15,6 +15,12 @@ def parse_args():
     )
 
     parser.add_argument(
+        "--bench",
+        action="store_true",
+        help="Benchmark a model's size in memory and token generation per second.",
+    )
+
+    parser.add_argument(
         "-q",
         "--quantize",
         choices=["int8", "int4"],
@@ -50,6 +56,8 @@ def main():
             apply_quantization(args.model_id, args.quantize)
         elif args.prune:
             apply_pruning(args.model_id, args.prune, args.prune_config)
+        elif args.bench:
+            benchmark(args.model_id)
 
 
 def apply_quantization(model_id, format):
@@ -58,8 +66,6 @@ def apply_quantization(model_id, format):
 
 def apply_pruning(model_id: str, method: str, prune_config: str | None = None):
     """
-    NOTE: currently, pruning `method` is not used.
-
     Args:
         model_id: Hugging Face model identifier.
         method: Pruning method to apply ('sparsegpt', 'wanda').
@@ -73,6 +79,12 @@ def apply_pruning(model_id: str, method: str, prune_config: str | None = None):
     from llmini.pruning.prune import prune
 
     prune(model_id, method, **prune_config)
+
+
+def benchmark(model_id):
+    from llmini.evaluation.bench import bench
+
+    bench(model_id)
 
 
 if __name__ == "__main__":
