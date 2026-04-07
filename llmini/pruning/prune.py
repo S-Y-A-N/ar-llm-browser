@@ -51,7 +51,7 @@ def prune(
             - **sparsity_profile:** Can be set to 'owl' to use Outlier Weighed Layerwise Sparsity (OWL), more information can be found in the paper https://arxiv.org/pdf/2310.05175
             - **mask_structure:** String to define the structure of the mask to apply. Must be of the form N:M where N, M are integers that define a custom block shape. Defaults to 0:0 which represents an unstructured mask.
     """
-    print(locals())
+    logger.info(f"Pruning arguments: {locals()}")
 
     # create the pruned model directory name
     recipe_str = f"{method}_{int(sparsity * 100)}"
@@ -72,7 +72,7 @@ def prune(
 
     # model information
     logger.info(f"Loading model: {model_id}")
-    model = AutoModelForCausalLM.from_pretrained(model_id, dtype="auto")
+    model = AutoModelForCausalLM.from_pretrained(model_id, dtype="auto", trust_remote_code=True)
     logger.info(model)
 
     # load tokenizer
