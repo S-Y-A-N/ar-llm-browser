@@ -50,14 +50,12 @@ def get_recipe(
     sparsity_profile: str | None = None,
     mask_structure: str = "0:0",
     targets: str | list[str] = ["Linear"],
-    sequential_targets: str | list[str] | None = None,
     ignore: list[str] = ["re:.*lm_head"],
 ):
     prune_args = {
         "sparsity": sparsity,
         "sparsity_profile": sparsity_profile,
         "mask_structure": mask_structure,
-        "sequential_targets": sequential_targets,
         "targets": targets,
         "ignore": ignore,
     }

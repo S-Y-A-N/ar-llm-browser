@@ -5,7 +5,7 @@ import argparse
 # parse arguments: model_id, model_dtype
 parser = argparse.ArgumentParser()
 parser.add_argument("model_id", help="Model ID or path")
-parser.add_argument("--dtype", help="Model dtype", default="auto", choices=["float32", "float16"])
+parser.add_argument("--dtype", help="Model dtype", default="auto", choices=["float32", "float16", "bfloat16"])
 args = parser.parse_args()
 
 # load model

@@ -91,7 +91,6 @@ def prune(
         sparsity=sparsity,
         sparsity_profile=sparsity_profile,
         mask_structure=mask_structure,
-        sequential_targets=sequential_targets,
     )
 
     # apply pruning
@@ -103,7 +102,7 @@ def prune(
         output_dir=output_dir,
         max_seq_length=MAX_SEQUENCE_LENGTH,
         num_calibration_samples=NUM_CALIBRATION_SAMPLES,
-        # sequential_targets=sequential_targets,
+        sequential_targets=sequential_targets,
     )
     logger.info(f"Compressed model saved to: {output_dir}")
     logger.info(model)
