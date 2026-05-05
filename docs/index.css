@@ -47,8 +47,13 @@ body {
   justify-content: center;
   flex-direction: column;
 
-  background-color: var(--bg-color);
+  background-color: var(--header-color);
   color: var(--text-color);
+}
+
+.container {
+  background-color: var(--bg-color);
+  width: 100%;
 }
 
 header {
@@ -65,7 +70,6 @@ header {
 main {
   max-width: 800px;
   margin: 0 auto;
-  margin-inline: 1.5rem;
 }
 
 button {
@@ -163,7 +167,8 @@ footer {
 
 .socials {
   display: flex;
-  gap: 3rem;
+  gap: 1rem 3rem;
+  flex-wrap: wrap;
 }
 
 .socials p {
@@ -182,4 +187,10 @@ footer {
 
 .socials-list .bi {
   color: var(--btn-text-color);
+}
+
+@media screen and (max-width: 800px) {
+  main {
+    margin-inline: 1.5rem;
+  }
 }
