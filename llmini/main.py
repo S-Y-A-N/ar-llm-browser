@@ -20,11 +20,12 @@ def parse_args():
         help="Benchmark a model's size in memory and token generation per second.",
     )
 
-    parser.add_argument(
+    quant_group = parser.add_argument_group("quantization options")
+    quant_group.add_argument(
+        "--quant",
         "-q",
-        "--quantize",
-        choices=["int8", "int4"],
-        help="Apply a quantization format.",
+        choices=["int4", "int8", "awq", "gptq"],
+        help="Choose a quantization algorithm. Option `int8` refers to the LLM.int8() algorithm. Option `int4` refers to QLoRa",
     )
 
     prune_group = parser.add_argument_group("pruning options")
@@ -60,8 +61,12 @@ def main():
             benchmark(args.model_id)
 
 
-def apply_quantization(model_id, format):
-    print(f"Applying quantization format `{format}` on `{model_id}`")
+def apply_quantization(model_id, method):
+    print(f"Applying quantization method `{method}` on `{model_id}`")
+
+    from llmini.quantizaton.quantize import quantize
+
+    quantize(model_id, method)
 
 
 def apply_pruning(model_id: str, method: str, prune_config: str | None = None):
@@ -69,7 +74,7 @@ def apply_pruning(model_id: str, method: str, prune_config: str | None = None):
     Args:
         model_id: Hugging Face model identifier.
         method: Pruning method to apply ('sparsegpt', 'wanda').
-        recipe_path: Path to `llmcompressor` pruning recipe.
+        prune_config: Optionally provide pruning config as comma-seperated string. Example: sparsity=0.7,mask_structure=2:4,sparsity_profile=owl
     """
     print(f"Applying pruning method `{method}` on `{model_id}`")
 

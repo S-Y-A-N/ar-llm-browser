@@ -4,6 +4,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 from llmcompressor import oneshot
 
 from datetime import datetime
+from llmini.utils.logging import logger
 from llmini.pruning.helpers import (
     PRUNE_METHOD,
     load_calibration_dataset,
@@ -11,15 +12,6 @@ from llmini.pruning.helpers import (
     get_recipe,
     validate,
 )
-
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s | %(name)s | %(levelname)s | %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-)
-logger = logging.getLogger(__name__)
 
 # Calibration data configuration
 # as used in the SparseGPT paper:
@@ -72,7 +64,9 @@ def prune(
 
     # model information
     logger.info(f"Loading model: {model_id}")
-    model = AutoModelForCausalLM.from_pretrained(model_id, dtype="auto", trust_remote_code=True)
+    model = AutoModelForCausalLM.from_pretrained(
+        model_id, dtype="auto", trust_remote_code=True
+    )
     logger.info(model)
 
     # load tokenizer

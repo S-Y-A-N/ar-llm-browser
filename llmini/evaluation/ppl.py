@@ -16,9 +16,11 @@ device = Accelerator().device
 parser = argparse.ArgumentParser()
 parser.add_argument("model_id", help="Model ID or path")
 parser.add_argument(
-  "--dtype", help="Model dtype",
-  default="auto",
-  choices=["float32", "float16", "bfloat16"])
+    "--dtype",
+    help="Model dtype",
+    default="auto",
+    choices=["float32", "float16", "bfloat16"],
+)
 args = parser.parse_args()
 
 # model and tokenizer
@@ -28,19 +30,16 @@ tokenizer = AutoTokenizer.from_pretrained(args.model_id)
 # wikitext dataset
 test = load_dataset("wikitext", "wikitext-2-raw-v1", split="test")
 encodings = tokenizer(
-  "\n\n".join(test["text"]),
-  return_tensors="pt",
-  truncation=True,
-  max_length=2048
-  )
+    "\n\n".join(test["text"]), return_tensors="pt", truncation=True, max_length=2048
+)
 
 # get model max length here, semi-hardcoded bc it differs in models (add yours if needed)
 try:
-  max_length = model.config.max_position_embeddings
+    max_length = model.config.max_position_embeddings
 except AttributeError:
-  max_length = model.config.text_config.sliding_window # for Gemma 3
+    max_length = model.config.text_config.sliding_window  # for Gemma 3
 
-stride = 2048 # same as the HuggingFace implementation
+stride = 2048  # same as the HuggingFace implementation
 seq_len = encodings.input_ids.size(1)
 
 nll_sum = 0.0
@@ -62,9 +61,13 @@ for begin_loc in tqdm(range(0, seq_len, stride)):
         neg_log_likelihood = outputs.loss
 
     # Accumulate the total negative log-likelihood and the total number of tokens
-    num_valid_tokens = (target_ids != -100).sum().item()  # number of valid tokens in target_ids
+    num_valid_tokens = (
+        (target_ids != -100).sum().item()
+    )  # number of valid tokens in target_ids
     batch_size = target_ids.size(0)
-    num_loss_tokens = num_valid_tokens - batch_size  # subtract batch_size due to internal label shift
+    num_loss_tokens = (
+        num_valid_tokens - batch_size
+    )  # subtract batch_size due to internal label shift
     nll_sum += neg_log_likelihood * num_loss_tokens
     n_tokens += num_loss_tokens
 
@@ -78,5 +81,3 @@ ppl = torch.exp(avg_nll)
 print(f"Model: {args.model_id}")
 print(f"Precision: {args.dtype}")
 print(f"Token Perplexity (WikiText-2): {ppl}")
-
-

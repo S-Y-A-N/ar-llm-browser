@@ -20,32 +20,32 @@ prompts = [
 
 
 def bench(model_id):
-    device = "cuda"
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.cuda.empty_cache()
     torch.cuda.reset_peak_memory_stats(device)
 
     model = AutoModelForCausalLM.from_pretrained(
         model_id, device_map=device, dtype=torch.float16
     )
+    model.eval()
     tokenizer = AutoTokenizer.from_pretrained(model_id)
+    dummy_input = torch.randn(1, 1024).to(device)
 
     torch.cuda.synchronize()
 
     # VRAM usage
     vram_bytes = torch.cuda.max_memory_allocated(device)
-    print(f"\nModel VRAM usage (bytes): {vram_bytes}")
+    print(f"\nModel VRAM usage (GB): {vram_bytes / (1024**3)}")
 
     elapsed, throughput = [], []
     GEN_TOKENS = 1024
-    for prompt in prompts:
-        inputs = tokenizer(prompt, return_tensors="pt").to(device)
-
+    for _ in range(100):
         # warmup (ensures GPU kernels are initialized)
-        outputs = model.generate(**inputs, max_new_tokens=64)
-        torch.cuda.synchronize()
+        _ = model.generate(dummy_input, max_new_tokens=64)
 
+        torch.cuda.synchronize()
         start = time.time()
-        outputs = model.generate(**inputs, max_new_tokens=GEN_TOKENS)
+        _ = model.generate(dummy_input, max_new_tokens=GEN_TOKENS)
         torch.cuda.synchronize()
         end = time.time()
 
@@ -54,9 +54,6 @@ def bench(model_id):
 
         print(f"Generated {GEN_TOKENS} tokens in {elapsed[-1]:.3f} sec")
         print(f"Tokens/sec: {throughput[-1]:.2f}")
-
-        text = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        print("\n\nModel Output:", text)
 
     mean_tps = np.mean(throughput)
     std_tps = np.std(throughput)
