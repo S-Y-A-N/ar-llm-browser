@@ -4,14 +4,17 @@ from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
 
 from llmcompressor.modifiers.awq import AWQModifier
+from llmcompressor.modifiers.gptq import GPTQModifier
 from llmcompressor.modifiers.transform.smoothquant import SmoothQuantModifier
+
+from llmini.pruning.helpers import get_block_name
 
 QUANT_METHOD = Literal[
     "int4",
-    "w4a16"  # QloRA vs AWQ W4A16
+    "w4a16"  # QloRA vs GPTQ W4A16
     "int8",
     "w8a16",
-    "w8a8",  # LLM.int8() vs AWQ W8A16 vs AWQ W8A8
+    "w8a8",  # LLM.int8() vs GPTQ W8A16 vs QPTQ W8A8
 ]
 
 # For AWQ, we need calibration data to estimate activation scales
@@ -30,11 +33,11 @@ def quantize(model_id: str, method: QUANT_METHOD):
             quant_config = BitsAndBytesConfig(load_in_8bit=True, llm_int8_threshold=6.0)
         case "w4a16":  # AWQ int4 (weight only)
             recipe = [
-                AWQModifier(scheme="W4A16", ignore=["lm_head"]),
+                GPTQModifier(scheme="W4A16", ignore=["lm_head"]),
             ]
         case "w8a16":  # AWQ int8 (weight only)
             recipe = [
-                AWQModifier(scheme="W8A16", ignore=["lm_head"]),
+                GPTQModifier(scheme="W8A16", ignore=["lm_head"]),
             ]
         case "w8a8":  # AWQ int8 (weight + activation) w/ SmoothQuant
             recipe = [
@@ -68,6 +71,7 @@ def quantize(model_id: str, method: QUANT_METHOD):
         calibration_data = load_calibration_data(
             DATASET_ID, tokenizer, num_samples=NUM_CALIBRATION_SAMPLES
         )
+        sequential_targets = get_block_name(model)
 
         oneshot(
             model=model,
@@ -77,6 +81,7 @@ def quantize(model_id: str, method: QUANT_METHOD):
             max_seq_length=MAX_SEQUENCE_LENGTH,
             num_calibration_samples=NUM_CALIBRATION_SAMPLES,
             output_dir=output_dir,
+            sequential_targets=sequential_targets
         )
 
         return
