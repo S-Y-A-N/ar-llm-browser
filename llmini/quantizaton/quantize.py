@@ -8,10 +8,10 @@ from llmcompressor.modifiers.transform.smoothquant import SmoothQuantModifier
 
 QUANT_METHOD = Literal[
     "int4",
-    "awq-int4-w"  # QloRA vs AWQ W4A16
+    "w4a16"  # QloRA vs AWQ W4A16
     "int8",
-    "awq-int8-w",
-    "awq-int8-wa",  # LLM.8bit() vs AWQ W8A16 vs AWQ W8A8
+    "w8a16",
+    "w8a8",  # LLM.8bit() vs AWQ W8A16 vs AWQ W8A8
 ]
 
 # For AWQ, we need calibration data to estimate activation scales
@@ -27,16 +27,16 @@ def quantize(model_id: str, method: QUANT_METHOD):
         case "int4":  # QLoRA (int4)
             quant_config = BitsAndBytesConfig(load_in_4bit=True)
         case "int8":  # LLM.int8()
-            quant_config = BitsAndBytesConfig(load_in_8bit=True, llm_int8_threshold=6)
-        case "awq-int4-w":  # W4A16 (weight only)
+            quant_config = BitsAndBytesConfig(load_in_8bit=True, llm_int8_threshold=6.0)
+        case "w4a16":  # AWQ int4 (weight only)
             recipe = [
                 AWQModifier(scheme="W4A16", ignore=["lm_head"]),
             ]
-        case "awq-int8-w":  # W8A16 (weight only)
+        case "w8a16":  # AWQ int8 (weight only)
             recipe = [
                 AWQModifier(scheme="W8A16", ignore=["lm_head"]),
             ]
-        case "awq-int8-wa":  # W8A8 (weight + activation)
+        case "w8a8":  # AWQ int8 (weight + activation) w/ SmoothQuant
             recipe = [
                 SmoothQuantModifier(smoothing_strength=0.5),
                 AWQModifier(scheme="W8A8", ignore=["lm_head"]),

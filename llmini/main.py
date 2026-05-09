@@ -7,6 +7,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         prog="llmini",
         description="%(prog)s is a command-line interface used to quickly compress and evaluate LLMs in one go.",
+        formatter_class=argparse.RawTextHelpFormatter
     )
 
     parser.add_argument(
@@ -24,8 +25,8 @@ def parse_args():
     quant_group.add_argument(
         "--quant",
         "-q",
-        choices=["int4", "int8", "awq", "gptq"],
-        help="Choose a quantization algorithm. Option `int8` refers to the LLM.int8() algorithm. Option `int4` refers to QLoRa",
+        choices=["int4", "int8", "w4a16", "w8a16", "w8a8"],
+        help="Choose a quantization algorithm.\n`int8` refers to the LLM.int8() algorithm.\n`int4` refers to QLoRa.\n`w4a16` and `w8a16` refer to AWQ weight-only int4 and int8 respectively.\n`w8a8` refer to AWQ wight+activation int8 with SmoothQuant.",
     )
 
     prune_group = parser.add_argument_group("pruning options")
@@ -53,8 +54,8 @@ def main():
     args = parse_args()
 
     if args.model_id:
-        if args.quantize:
-            apply_quantization(args.model_id, args.quantize)
+        if args.quant:
+            apply_quantization(args.model_id, args.quant)
         elif args.prune:
             apply_pruning(args.model_id, args.prune, args.prune_config)
         elif args.bench:
