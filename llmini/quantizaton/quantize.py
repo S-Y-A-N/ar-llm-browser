@@ -11,7 +11,7 @@ QUANT_METHOD = Literal[
     "w4a16"  # QloRA vs AWQ W4A16
     "int8",
     "w8a16",
-    "w8a8",  # LLM.8bit() vs AWQ W8A16 vs AWQ W8A8
+    "w8a8",  # LLM.int8() vs AWQ W8A16 vs AWQ W8A8
 ]
 
 # For AWQ, we need calibration data to estimate activation scales
@@ -53,26 +53,30 @@ def quantize(model_id: str, method: QUANT_METHOD):
     model = AutoModelForCausalLM.from_pretrained(
         model_id, dtype="auto", quantization_config=quant_config
     )
+    tokenizer = AutoTokenizer.from_pretrained(model_id)
 
     # if using GPTQ or AWQ...
     if any(m in method for m in ["awq", "gptq"]):
         from llmcompressor import oneshot
 
-        tokenizer = AutoTokenizer.from_pretrained(model_id)
         calibration_data = load_calibration_data(
             DATASET_ID, tokenizer, num_samples=NUM_CALIBRATION_SAMPLES
         )
 
         oneshot(
             model=model,
+            tokenizer=tokenizer,
             dataset=calibration_data,
             recipe=recipe,
             max_seq_length=MAX_SEQUENCE_LENGTH,
             num_calibration_samples=NUM_CALIBRATION_SAMPLES,
             output_dir=output_dir,
         )
+
         return
+
     model.save_pretrained(output_dir)
+    tokenizer.save_pretrained(output_dir)
 
 
 def load_calibration_data(

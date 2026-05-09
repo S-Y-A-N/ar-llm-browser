@@ -7,7 +7,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         prog="llmini",
         description="%(prog)s is a command-line interface used to quickly compress and evaluate LLMs in one go.",
-        formatter_class=argparse.RawTextHelpFormatter
+        formatter_class=argparse.RawTextHelpFormatter,
     )
 
     parser.add_argument(
