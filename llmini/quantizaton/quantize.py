@@ -21,8 +21,8 @@ MAX_SEQUENCE_LENGTH = 2048
 
 
 def quantize(model_id: str, method: QUANT_METHOD):
-    quant_config = BitsAndBytesConfig()
-
+    quant_config = recipe = None # initialize to None
+    
     match method:
         case "int4":  # QLoRA (int4)
             quant_config = BitsAndBytesConfig(load_in_4bit=True)
@@ -50,15 +50,21 @@ def quantize(model_id: str, method: QUANT_METHOD):
     output_dir = f"models/{model_id}_{method}_" + datetime.now().strftime(
         "%Y-%m-%d_%H-%M-%S"
     )
-    model = AutoModelForCausalLM.from_pretrained(
-        model_id, dtype="auto", quantization_config=quant_config
-    )
+    if quant_config:
+        print(f"Quantization config: {quant_config}")
+        model = AutoModelForCausalLM.from_pretrained(
+            model_id, dtype="auto", quantization_config=quant_config
+        )
+    
     tokenizer = AutoTokenizer.from_pretrained(model_id)
 
     # if using GPTQ or AWQ...
-    if any(m in method for m in ["awq", "gptq"]):
+    if recipe:
         from llmcompressor import oneshot
-
+        print(f"Recipe: {recipe}")
+        model = AutoModelForCausalLM.from_pretrained(
+            model_id, dtype="auto"
+        )
         calibration_data = load_calibration_data(
             DATASET_ID, tokenizer, num_samples=NUM_CALIBRATION_SAMPLES
         )

@@ -24,7 +24,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 # model and tokenizer
-model = AutoModelForCausalLM.from_pretrained(args.model_id, dtype=args.dtype).to(device)
+model = AutoModelForCausalLM.from_pretrained(args.model_id, dtype=args.dtype)
 tokenizer = AutoTokenizer.from_pretrained(args.model_id)
 
 # wikitext dataset
