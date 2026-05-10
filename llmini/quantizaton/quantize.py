@@ -42,7 +42,7 @@ def quantize(model_id: str, method: QUANT_METHOD):
         case "w8a8":  # AWQ int8 (weight + activation) w/ SmoothQuant
             recipe = [
                 SmoothQuantModifier(smoothing_strength=0.5),
-                AWQModifier(scheme="W8A8", ignore=["lm_head"]),
+                GPTQModifier(scheme="W8A8", ignore=["lm_head"]),
             ]
         case _:
             raise NotImplementedError(
@@ -83,11 +83,12 @@ def quantize(model_id: str, method: QUANT_METHOD):
             output_dir=output_dir,
             sequential_targets=sequential_targets
         )
-
+        print(f"Model saved to {output_dir}")
         return
-
+    
     model.save_pretrained(output_dir)
     tokenizer.save_pretrained(output_dir)
+    print(f"Model saved to {output_dir}")
 
 
 def load_calibration_data(
