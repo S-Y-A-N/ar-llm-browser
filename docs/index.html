@@ -51,8 +51,16 @@
         </a>
       </div>
     </header>
+    <nav>
+      <ul>
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#framework">Experimental Framework</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#acai">ACAI</a></li>
+      </ul>
+    </nav>
     <main>
-      <section>
+      <section id="abstract">
         <h2>Abstract</h2>
         <p class="justify">
           This work evaluates the effectiveness of several model compression and optimization
@@ -71,45 +79,48 @@
           performance.
         </p>
       </section>
-      <section>
+      <hr>
+      <section id="framework">
         <h2>Experimental Framework</h2>
-        <p></p>
-                <div class="figure-container">
-          <div class="figure">
-          <img src="report/figures/llmini.png">
-          </div>
-        <div class="figure">
-        </div>
-        <p class="justify">
+        <p>
+          We develope a command-line tool to easily apply compression methods like quantization and pruning on any model
+          using its Hugging Face identifier or path on the device. The framework depends on the python libraries
+          transformers for model loading, datasets for data loading, and llmcompressor for some compression methods like
+          GPTQ and pruning.
         </p>
-        <pre>
+        <div class="figure-container">
+          <div class="figure">
+            <img src="report/figures/llmini.png">
+          </div>
+          <p><b>Usage:</b></p>
+          <pre>
           <code>
   llmini [-h] [--quant {int4,int8,w4a16,w8a16,w8a8}]
               [--prune {sparsegpt,wanda}] [--prune-config PRUNE_CONFIG]
          model_id
           </code>
         </pre>
-        <p><b>Usage examples:</b></p>
-        <ul>
-          <li>GPTQ int8 weights and activations quantization with SmootQuant on ALLaM-7B:</li>
-          <pre>
+          <p><b>Examples:</b></p>
+          <ul>
+            <li>GPTQ int8 weights and activations quantization with SmootQuant on ALLaM-7B:</li>
+            <pre>
             <code>
   llmini "humain-ai/ALLaM-7B-Instruct-preview"
          --quant w8a8
             </code>
           </pre>
-          <li>SparseGPT 50% unstructred pruning on ALLaM-7B:</li>
-          <pre>
+            <li>SparseGPT 50% unstructred pruning on ALLaM-7B:</li>
+            <pre>
             <code>
   llmini "humain-ai/ALLaM-7B-Instruct-preview"
          --prune sparsegpt
             </code>
           </pre>
-        </ul>
+          </ul>
 
       </section>
-      <section>
-
+      <hr>
+      <section id="results">
         <h2>Results</h2>
         <h3>Quantization</h3>
         <p>
@@ -127,7 +138,8 @@
         <h3>Pruning</h3>
         <p>
           We apply two pruning methods on ALLaM-7B, Qwen3-8B, Llama3.1-8B, and Gemma3-12B and evaluate with ArabicMMLU
-          and metabench. We find that SparseGPT retains more of the original accuracy accross all models, and that the gap between SparseGPT and Wanda varies by model architecture.
+          and metabench. We find that SparseGPT retains more of the original accuracy accross all models, and that the
+          gap between SparseGPT and Wanda varies by model architecture.
         </p>
         <div class="figure-container">
           <div class="figure">
@@ -144,11 +156,12 @@
           </div>
         </div>
       </section>
-      <section>
+      <hr>
+      <section id="acai">
         <h2>Arabic Cognitive AI (ACAI)</h2>
         <div class="figure-container">
           <div class="figure">
-            <img src="report/figures/acai-arch.png">
+            <img class="img-small" src="report/figures/acai-arch.png">
           </div>
         </div>
       </section>

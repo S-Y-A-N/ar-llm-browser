@@ -13,6 +13,7 @@
 :root[data-theme="light"] {
   --header-color: rgb(255, 231, 190);
   --bg-color: rgb(255, 237, 207);
+  --nav-color: rgb(244, 207, 149);
 
   --text-color: rgb(0, 0, 0);
   --icon-color: rgb(232, 160, 16);
@@ -28,6 +29,7 @@
 :root[data-theme="dark"] {
   --header-color: rgb(35, 35, 35);
   --bg-color: rgb(42, 42, 42);
+  --nav-color: rgb(22, 22, 22);
 
   --text-color: rgb(255, 255, 255);
   --icon-color: rgb(255, 200, 89);
@@ -70,6 +72,12 @@ header {
 main {
   max-width: 800px;
   margin: 0 auto;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid rgba(128, 128, 128, 0.25);
+  margin-top: 1.5rem;
 }
 
 button {
@@ -126,6 +134,29 @@ button.theme-btn:hover {
   display: none;
 }
 
+/* navigation */
+nav {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--nav-color);
+  position: sticky;
+  top: 0;
+  margin-bottom: 2rem;
+}
+
+nav>ul {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+nav>ul>li>a {
+    text-decoration: none;
+}
+
 /* for long text paragraphs, unused  */
 p.justify {
   text-align: left;
@@ -145,6 +176,10 @@ code,
   border-radius: 0.5rem;
 }
 
+pre {
+  line-height: 1;
+}
+
 /* footer */
 footer {
   background-color: var(--header-color);
@@ -153,7 +188,7 @@ footer {
   padding: 3rem;
 }
 
-footer > div {
+footer>div {
   max-width: 800px;
   margin: 0 auto;
 }
@@ -205,10 +240,24 @@ footer > div {
   text-align: center;
 }
 
-.figure > img {
-    max-width: 400px;
+.figure>img {
+  width: 100%;
+  height: auto;
 }
 
 .figure-container {
   margin: 1rem 0;
+}
+
+.img-small {
+  max-width: 400px;
+}
+
+.img-medium {
+  max-width: 600px;
+}
+
+/* Lists */
+ul li {
+  margin-inline-start: 1rem;
 }
