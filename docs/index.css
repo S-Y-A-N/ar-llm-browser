@@ -153,6 +153,11 @@ footer {
   padding: 3rem;
 }
 
+footer > div {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
 .socials-container {
   max-width: 800px;
   margin: 0 auto;
@@ -193,4 +198,9 @@ footer {
   main {
     margin-inline: 1.5rem;
   }
+}
+
+/* images and figures */
+.figure {
+  text-align: center;
 }
