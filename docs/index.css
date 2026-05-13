@@ -204,3 +204,11 @@ footer > div {
 .figure {
   text-align: center;
 }
+
+.figure > img {
+    max-width: 400px;
+}
+
+.figure-container {
+  margin: 1rem 0;
+}

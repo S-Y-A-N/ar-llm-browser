@@ -56,53 +56,100 @@
         <h2>Abstract</h2>
         <p class="justify">
           This work evaluates the effectiveness of several model compression and optimization
-          techniques on large language models, namely quantization, pruning, and knowledge distillation,
+          techniques on large language models, namely <b>quantization</b>, <b>pruning</b>, and <b>knowledge
+            distillation</b>,
           with a focus on Arabic natural language performance and browser deployment. The primary
           methods investigated are 8-bit and 4-bit quantization with several methods such as GPTQ,
           LLM.int8(), and QLoRA, SparseGPT and Wanda for pruning, and a knowledge distillation
           pipeline based on a Qwen2.5-32B-Instruct teacher model and a Qwen2.5-7B-Instruct student
-          model. The proposed SelecTKD method filters low-confidence teacher tokens during token-
-          level distillation to improve bilingual Arabic-English balance. The paper concludes with a
+          model. The proposed SelecTKD method filters low-confidence teacher tokens during token-level
+          distillation to improve bilingual Arabic-English balance. The report concludes with a
           comprehensive comparative analysis between the tested compression methods, comparing their
           compression and accuracy tradeoff and discussing their practical effectiveness for limited-
           resource deployment. The study also includes staged fine-tuning to adapt the model to Arabic,
           GCC, and Bahraini contexts using a broad-to-specific curriculum while preserving bilingual
           performance.
-
         </p>
       </section>
       <section>
-        <h2>Implementation</h2>
-        <div class="figure">
+        <h2>Experimental Framework</h2>
+        <p></p>
+                <div class="figure-container">
+          <div class="figure">
           <img src="report/figures/llmini.png">
+          </div>
+        <div class="figure">
         </div>
         <p class="justify">
         </p>
         <pre>
           <code>
-    llmini
+  llmini [-h] [--quant {int4,int8,w4a16,w8a16,w8a8}]
+              [--prune {sparsegpt,wanda}] [--prune-config PRUNE_CONFIG]
+         model_id
           </code>
         </pre>
+        <p><b>Usage examples:</b></p>
+        <ul>
+          <li>GPTQ int8 weights and activations quantization with SmootQuant on ALLaM-7B:</li>
+          <pre>
+            <code>
+  llmini "humain-ai/ALLaM-7B-Instruct-preview"
+         --quant w8a8
+            </code>
+          </pre>
+          <li>SparseGPT 50% unstructred pruning on ALLaM-7B:</li>
+          <pre>
+            <code>
+  llmini "humain-ai/ALLaM-7B-Instruct-preview"
+         --prune sparsegpt
+            </code>
+          </pre>
+        </ul>
+
       </section>
       <section>
+
         <h2>Results</h2>
-        <div class="figure">
-          <img width="700" src="report/figures/quant-ret-acc.png">
+        <h3>Quantization</h3>
+        <p>
+          We apply five quanztiation methods on ALLaM-7B and evaluate with ArabicMMLU and metabench. We find that 8-bit
+          GPTQ (W8A8 and W8A16) retained the full accuracy of the original model, while LLM.int8() (Int8) retained over
+          98% average accuracy retention. We also find that 4-bit GPTQ (W4A16) performs competitively with over 95%
+          average accuracy retention, while QLoRA's double quantization (Int4) falls behind, likely due to QLoRA being
+          designed for fine-tuning.
+        </p>
+        <div class="figure-container">
+          <div class="figure">
+            <img src="report/figures/quant-ret-acc.png">
+          </div>
         </div>
-        <div class="figure">
-          <img width="700" src="report/figures/prune-ret-acc.png">
+        <h3>Pruning</h3>
+        <p>
+          We apply two pruning methods on ALLaM-7B, Qwen3-8B, Llama3.1-8B, and Gemma3-12B and evaluate with ArabicMMLU
+          and metabench. We find that SparseGPT retains more of the original accuracy accross all models, and that the gap between SparseGPT and Wanda varies by model architecture.
+        </p>
+        <div class="figure-container">
+          <div class="figure">
+            <img src="report/figures/prune-ret-acc.png">
+          </div>
         </div>
-        <div class="figure">
-          <img width="700" src="report/figures/prune-ppl.png">
-        </div>
-        <div class="figure">
-          <img width="700" src="report/figures/kd-ft-evals.png">
+        <h3>Knowledge Distillation and Fine-tuning</h3>
+        <p>
+          Add summary of findings here...
+        </p>
+        <div class="figure-container">
+          <div class="figure">
+            <img src="report/figures/kd-ft-evals.png">
+          </div>
         </div>
       </section>
       <section>
         <h2>Arabic Cognitive AI (ACAI)</h2>
-        <div class="figure">
-          <img width="300" src="report/figures/acai-arch.png">
+        <div class="figure-container">
+          <div class="figure">
+            <img src="report/figures/acai-arch.png">
+          </div>
         </div>
       </section>
     </main>
