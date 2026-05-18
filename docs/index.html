@@ -31,9 +31,9 @@
       </button>
       <h1>Browser-based Locally Hosted Arabic LLM Optimization</h1>
       <div class="authors">
-        <span><a href="">Shahad Nassar</a></span>,
-        <span><a href="">Fatima Falah</a></span>,
-        <span><a href="">Hoor Muneer</a></span>
+        <span><a href="https://www.linkedin.com/in/fatimafalah/" target="_blank">Fatima Falah</a></span>,
+        <span><a href="https://www.linkedin.com/in/shahad-nassar/" target="_blank">Shahad Nassar</a></span>,
+        <span><a href="" target="_blank">Hoor Muneer</a></span>
       </div>
       <p>University of Bahrain</p>
       <div class="links-container">
@@ -49,6 +49,12 @@
             <span>Code</span>
           </button>
         </a>
+        <a href="https://huggingface.co/ar-llm-browser" target="_blank" rel="noopener noreferrer">
+          <button>
+            <span>🤗</span>
+            <span>Models</span>
+          </button>
+        </a>
       </div>
     </header>
     <nav>
@@ -62,7 +68,7 @@
     <main>
       <section id="abstract">
         <h2>Abstract</h2>
-        <p class="justify">
+        <p class="long">
           This work evaluates the effectiveness of several model compression and optimization
           techniques on large language models, namely <b>quantization</b>, <b>pruning</b>, and <b>knowledge
             distillation</b>,
@@ -82,7 +88,7 @@
       <hr>
       <section id="framework">
         <h2>Experimental Framework</h2>
-        <p>
+        <p class="long">
           We develope a command-line tool to easily apply compression methods like quantization and pruning on any model
           using its Hugging Face identifier or path on the device. The framework depends on the python libraries
           transformers for model loading, datasets for data loading, and llmcompressor for some compression methods like
@@ -92,38 +98,56 @@
           <div class="figure">
             <img src="report/figures/llmini.png">
           </div>
-          <p><b>Usage:</b></p>
-          <pre>
+        </div>
+        <p><b>Usage:</b></p>
+        <pre>
           <code>
   llmini [-h] [--quant {int4,int8,w4a16,w8a16,w8a8}]
               [--prune {sparsegpt,wanda}] [--prune-config PRUNE_CONFIG]
          model_id
           </code>
         </pre>
-          <p><b>Examples:</b></p>
-          <ul>
-            <li>GPTQ int8 weights and activations quantization with SmootQuant on ALLaM-7B:</li>
-            <pre>
+        <p><b>Examples:</b></p>
+        <ul class="long">
+          <li>GPTQ int8 weights and activations quantization with SmootQuant on ALLaM-7B:</li>
+          <pre>
             <code>
   llmini "humain-ai/ALLaM-7B-Instruct-preview"
          --quant w8a8
             </code>
           </pre>
-            <li>SparseGPT 50% unstructred pruning on ALLaM-7B:</li>
-            <pre>
+          <li>SparseGPT 50% unstructred pruning on ALLaM-7B:</li>
+          <pre>
             <code>
   llmini "humain-ai/ALLaM-7B-Instruct-preview"
          --prune sparsegpt
             </code>
           </pre>
-          </ul>
-
+        </ul>
+        <p class="long">
+          Additionally, the knowledge distillation experimental framework is shown in the
+          figure below.
+        </p>
+        <div class="figure-container">
+          <div class="figure">
+            <img src="report/figures/kd-framework.png">
+          </div>
+        </div>
+        <p class="long">
+          And the fine-tuning experimental framework is shown in the
+          figure below.
+        </p>
+        <div class="figure-container">
+          <div class="figure">
+            <img src="report/figures/ft-framework.png">
+          </div>
+        </div>
       </section>
       <hr>
       <section id="results">
         <h2>Results</h2>
         <h3>Quantization</h3>
-        <p>
+        <p class="long">
           We apply five quanztiation methods on ALLaM-7B and evaluate with ArabicMMLU and metabench. We find that 8-bit
           GPTQ (W8A8 and W8A16) retained the full accuracy of the original model, while LLM.int8() (Int8) retained over
           98% average accuracy retention. We also find that 4-bit GPTQ (W4A16) performs competitively with over 95%
@@ -136,7 +160,7 @@
           </div>
         </div>
         <h3>Pruning</h3>
-        <p>
+        <p class="long">
           We apply two pruning methods on ALLaM-7B, Qwen3-8B, Llama3.1-8B, and Gemma3-12B and evaluate with ArabicMMLU
           and metabench. We find that SparseGPT retains more of the original accuracy accross all models, and that the
           gap between SparseGPT and Wanda varies by model architecture.
@@ -147,14 +171,32 @@
           </div>
         </div>
         <h3>Knowledge Distillation and Fine-tuning</h3>
-        <p>
-          Add summary of findings here...
+        <p class="long">
+          The figure below compares the baseline, knowledge distillation, and fine-tuned models across
+          multilingual reasoning, Arabic/GCC evaluation, bilingual consistency, and perplexity. The
+          figure shows that the <strong>KD models provide a strong initialization</strong> for bilingual Arabic-English
+          performance, while the fine-tuned variants shift the model toward <strong>different strengths</strong>
+          depending
+          on the training strategy. <strong>SelectKD gives the strongest bilingual balance</strong> among the KD
+          baselines, as reflected by its <strong>low LPG and high CLCS</strong>.
         </p>
         <div class="figure-container">
           <div class="figure">
             <img src="report/figures/kd-ft-evals.png">
           </div>
         </div>
+        <p class="long">
+          Among the <em>fine-tuned</em> models, <strong>FT-v1
+            preserves bilingual consistency</strong> more effectively, whereas FT-V2 achieves stronger results on
+          MMLU-EN, AraDiCE-Qatar, and Habash-based tasks. This indicates that <strong>staged fine-tuning
+            improves dialect specialization</strong>, but the final behavior depends on whether the model is
+          optimized for balance or for task-specific adaptation. In addition, the fine-tuning dataset was
+          designed to support Bahraini specialization for deployment purposes. Because the dataset was
+          largely derived from Bahraini series and television show transcripts, it strongly shaped the model’s
+          behavior toward dialectal generation. As a result, the model gained Bahraini dialect knowledge
+          but showed weaker analytical ability. To mitigate this limitation, instruction-format data was
+          incorporated into FT-V2.
+        </p>
       </section>
       <hr>
       <section id="acai">
@@ -175,19 +217,36 @@
           <p><b>Get in touch!</b></p>
           <div class="socials">
             <div>
+              <p><b>Fatima F.</b></p>
+              <div class="socials-list">
+                <div>
+                  <i class="bi bi-linkedin"></i>
+                  <a href="https://www.linkedin.com/in/fatimafalah/" target="_blank">LinkedIn</a>
+                </div>
+                <div>
+                  <i class="bi bi-github"></i>
+                  <a href="https://github.com/Fatimadayan" target="_blank">GitHub</a>
+                </div>
+                <div>
+                  <i class="bi bi-envelope-fill"></i>
+                  <a href="mailto:fatimafalahdayan@gmail.com" target="_blank">Email</a>
+                </div>
+              </div>
+            </div>
+            <div>
               <p><b>Shahad N.</b></p>
               <div class="socials-list">
                 <div>
                   <i class="bi bi-linkedin"></i>
-                  <a href="https://www.linkedin.com/in/shahad-nassar/">LinkedIn</a>
+                  <a href="https://www.linkedin.com/in/shahad-nassar/" target="_blank">LinkedIn</a>
                 </div>
                 <div>
                   <i class="bi bi-github"></i>
-                  <a href="https://github.com/S-Y-A-N">GitHub</a>
+                  <a href="https://github.com/S-Y-A-N" target="_blank">GitHub</a>
                 </div>
                 <div>
                   <i class="bi bi-envelope-fill"></i>
-                  <a href="mailto:shahadxnassar@gmail.com">Email</a>
+                  <a href="mailto:shahadxnassar@gmail.com" target="_blank">Email</a>
                 </div>
               </div>
             </div>
@@ -196,32 +255,15 @@
               <div class="socials-list">
                 <div>
                   <i class="bi bi-linkedin"></i>
-                  <a href="https://linkedin.com">LinkedIn</a>
+                  <a href="" target="_blank">LinkedIn</a>
                 </div>
                 <div>
                   <i class="bi bi-github"></i>
-                  <a href="https://github.com">GitHub</a>
+                  <a href="" target="_blank">GitHub</a>
                 </div>
                 <div>
                   <i class="bi bi-envelope-fill"></i>
-                  <a href="mailto:">Email</a>
-                </div>
-              </div>
-            </div>
-            <div>
-              <p><b>Fatima F.</b></p>
-              <div class="socials-list">
-                <div>
-                  <i class="bi bi-linkedin"></i>
-                  <a href="https://linkedin.com">LinkedIn</a>
-                </div>
-                <div>
-                  <i class="bi bi-github"></i>
-                  <a href="https://github.com">GitHub</a>
-                </div>
-                <div>
-                  <i class="bi bi-envelope-fill"></i>
-                  <a href="mailto:">Email</a>
+                  <a href="" target="_blank">Email</a>
                 </div>
               </div>
             </div>
