@@ -151,15 +151,16 @@ nav>ul {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 1rem 2rem;
 }
 
 nav>ul>li>a {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 /* for long text paragraphs, unused  */
-p.long, ul.long {
+p.long,
+ul.long {
   font-family: "PT Serif", serif;
   line-height: 1.6;
   font-size: 1.2rem;
@@ -189,11 +190,17 @@ footer {
   width: 100%;
   margin-top: 2rem;
   padding: 3rem;
+  text-align: center;
+
 }
 
 footer>div {
   max-width: 800px;
   margin: 0 auto;
+}
+
+.project-email {
+  margin-bottom: 2rem;
 }
 
 .socials-container {
@@ -206,12 +213,14 @@ footer>div {
   font-size: 1.3rem;
   text-decoration: underline dashed;
   text-underline-offset: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .socials {
   display: flex;
-  gap: 1rem 3rem;
   flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem 10rem;
 }
 
 .socials p {
@@ -241,9 +250,13 @@ footer>div {
 /* images and figures */
 .figure {
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.figure>img {
+.figure>img,.figure>video {
   width: 100%;
   height: auto;
 }
