@@ -1,9 +1,3 @@
-/* ===================================================================
-   Browser-based Locally Hosted Arabic LLM Optimization
-   Design system: "Illuminated Research" — gold-on-ink, geometric Arabic
-   motifs, editorial serif display + grotesque body + mono technical accents
-   =================================================================== */
-
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
@@ -107,8 +101,6 @@
 }
 
 /* ---------------- Bilingual show / hide ---------------- */
-.lang-en,
-.lang-ar { }
 html[data-lang="en"] .lang-ar { display: none !important; }
 html[data-lang="ar"] .lang-en { display: none !important; }
 
@@ -137,8 +129,7 @@ html[data-lang="ar"] .hero-affil,
 html[data-lang="ar"] .stat .label,
 html[data-lang="ar"] .socials-container > p,
 html[data-lang="ar"] .scroll-hint,
-html[data-lang="ar"] .footer-foot,
-html[data-lang="ar"] .nav-brand-text span {
+html[data-lang="ar"] .footer-foot {
   letter-spacing: 0 !important;
   text-transform: none !important;
   font-family: "Tajawal", sans-serif;
@@ -152,10 +143,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
-  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -212,8 +203,6 @@ nav.topnav {
   padding: 0.65rem clamp(1rem, 4vw, 2.5rem);
   background: transparent;
   border-bottom: 1px solid transparent;
-  transition: background 0.4s var(--ease), backdrop-filter 0.4s var(--ease),
-    border-color 0.4s var(--ease), padding 0.35s var(--ease), box-shadow 0.4s var(--ease);
 }
 
 nav.topnav.scrolled {
@@ -224,24 +213,6 @@ nav.topnav.scrolled {
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
   box-shadow: var(--shadow-sm);
-}
-
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  text-decoration: none;
-  color: var(--text-color);
-  opacity: 0;
-  transform: translateX(-6px);
-  transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
-  pointer-events: none;
-}
-
-nav.topnav.scrolled .nav-brand {
-  opacity: 1;
-  transform: none;
-  pointer-events: auto;
 }
 
 .nav-mark {
@@ -262,26 +233,6 @@ nav.topnav.scrolled .nav-brand {
   height: 100%;
   object-fit: contain;
   padding: 3px;
-}
-
-.nav-brand-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-.nav-brand-text strong {
-  font-family: var(--font-display);
-  font-size: 0.95rem;
-  letter-spacing: -0.01em;
-}
-
-.nav-brand-text span {
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted-color);
 }
 
 nav.topnav ul {
@@ -357,13 +308,9 @@ button.lang-btn {
   font-weight: 700;
   font-size: 0.8rem;
   color: var(--gold-deep);
-  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), color 0.2s var(--ease);
 }
 
-button.lang-btn .bi { font-size: 0.95rem; }
-
 button.lang-btn:hover {
-  transform: translateY(-2px);
   border-color: var(--border-strong);
   color: var(--link-hover-color);
 }
@@ -372,21 +319,17 @@ html[data-lang="ar"] button.lang-btn .lang-btn-text { font-family: var(--font-bo
 
 /* theme toggle */
 button.theme-btn {
-  display: grid;
-  place-items: center;
   width: 40px;
   height: 40px;
   background: var(--card-color);
   border: 1px solid var(--border);
   border-radius: 50%;
   cursor: pointer;
-  font-size: 1.05rem;
   color: var(--gold);
-  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), color 0.25s var(--ease);
+  font-size: 1.05rem;
 }
 
 button.theme-btn:hover {
-  transform: rotate(-18deg) scale(1.07);
   border-color: var(--border-strong);
   color: var(--link-hover-color);
 }
@@ -396,8 +339,6 @@ button.theme-btn:hover {
   align-items: center;
   gap: 0.4rem;
   text-decoration: none;
-  font-family: var(--font-body);
-  font-weight: 700;
   font-size: 0.82rem;
   padding: 0.5rem 1rem;
   border-radius: 999px;
@@ -405,11 +346,10 @@ button.theme-btn:hover {
   background: linear-gradient(135deg, var(--gold-bright), var(--gold));
   border: none;
   box-shadow: 0 8px 22px -10px var(--glow);
-  transition: transform 0.25s var(--ease), box-shadow 0.3s var(--ease);
+  font-weight: 700;
 }
 
 .nav-cta:hover {
-  transform: translateY(-2px);
   box-shadow: 0 14px 30px -10px var(--glow);
   color: rgb(34, 22, 4);
 }
@@ -463,7 +403,7 @@ h1.hero-title {
   font-size: clamp(2.2rem, 6vw, 4.1rem);
   line-height: 1.04;
   letter-spacing: -0.02em;
-  margin: 0 auto 1.4rem;
+  margin: 5rem auto 1.4rem;
   max-width: 16ch;
   opacity: 0;
   animation: rise 1s var(--ease) 0.15s forwards;
@@ -513,11 +453,9 @@ h1.hero-title .accent {
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--card-color);
-  transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
 }
 
 .authors .author-chip:hover {
-  transform: translateY(-2px);
   border-color: var(--border-strong);
   box-shadow: var(--shadow-sm);
   color: var(--text-color);
@@ -560,17 +498,15 @@ h1.hero-title .accent {
 }
 
 .btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 0.55rem;
+  gap: 1.6rem 0.5rem;
   cursor: pointer;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.92rem;
-  padding: 0.72rem 1.4rem;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 999px;
-  transition: transform 0.25s var(--ease), box-shadow 0.3s var(--ease),
-    background 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 
 .btn .bi,
@@ -586,7 +522,6 @@ h1.hero-title .accent {
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px);
   box-shadow: 0 20px 42px -14px var(--glow);
 }
 
@@ -597,7 +532,6 @@ h1.hero-title .accent {
 }
 
 .btn-ghost:hover {
-  transform: translateY(-3px);
   background: var(--btn-hover-color);
   box-shadow: var(--shadow-sm);
 }
@@ -615,6 +549,7 @@ h1.hero-title .accent {
   text-transform: uppercase;
   opacity: 0;
   animation: rise 1s var(--ease) 0.8s forwards;
+  text-decoration: none;
 }
 
 .scroll-hint .bi {
@@ -644,8 +579,6 @@ section.card {
   overflow: hidden;
 
   opacity: 0;
-  transform: translateY(34px);
-  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
 }
 
 section.card.in {
@@ -821,11 +754,9 @@ ul li.long::marker {
   padding: 1.3rem 1.1rem;
   background: var(--card-color-2);
   text-align: center;
-  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 
 .stat:hover {
-  transform: translateY(-4px);
   border-color: var(--border-strong);
   box-shadow: var(--shadow-sm);
 }
@@ -1009,11 +940,9 @@ footer > div {
   border-radius: 18px;
   border: 1px solid var(--border);
   background: var(--card-color);
-  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
 }
 
 .social-card:hover {
-  transform: translateY(-4px);
   border-color: var(--border-strong);
   box-shadow: var(--shadow-sm);
 }
@@ -1082,9 +1011,8 @@ footer > div {
 @media screen and (max-width: 760px) {
   nav.topnav ul { gap: 0.7rem; }
   nav.topnav a.nav-link { font-size: 0.74rem; }
-  .nav-brand-text span { display: none; }
   .nav-cta span.cta-text { display: none; }
-  .nav-cta { padding: 0.5rem 0.7rem; }
+  .nav-cta { padding: 0.5rem 0.76rem; }
   .section-head { gap: 0.8rem; }
   .section-icon { width: 46px; height: 46px; font-size: 1.25rem; }
 }

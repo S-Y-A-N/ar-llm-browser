@@ -44,7 +44,7 @@ def prune(
             - **mask_structure:** String to define the structure of the mask to apply. Must be of the form N:M where N, M are integers that define a custom block shape. Defaults to 0:0 which represents an unstructured mask.
     """
     logger.info(f"Pruning arguments: {locals()}")
-
+    sparsity = float(sparsity)
     # create the pruned model directory name
     recipe_str = f"{method}_{int(sparsity * 100)}"
 
