@@ -104,6 +104,10 @@
 html[data-lang="en"] .lang-ar { display: none !important; }
 html[data-lang="ar"] .lang-en { display: none !important; }
 
+.bi, .av {
+ font-family: "Hanken Grotesk", system-ui, sans-serif
+}
+
 /* keep code, technical tokens & figures left-to-right even in Arabic */
 pre,
 pre code,
@@ -222,7 +226,6 @@ nav.topnav.scrolled {
   height: 38px;
   flex-shrink: 0;
   border-radius: 10px;
-  overflow: hidden;
   background: #fff;
   border: 1px solid var(--border);
   box-shadow: 0 4px 14px -4px var(--glow);
@@ -291,6 +294,10 @@ nav.topnav a.nav-link.active {
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+}
+
+button {
+  line-height: 1;
 }
 
 /* language toggle */
@@ -611,7 +618,7 @@ section.card::before {
   width: 54px;
   height: 54px;
   flex-shrink: 0;
-  border-radius: 16px;
+  border-radius: 1rem;
   font-size: 1.5rem;
   color: var(--gold);
   background: var(--card-color-2);
@@ -707,6 +714,10 @@ ul li {
   margin: 0.5rem 0 0.5rem 1.1rem;
 }
 
+ul li.long {
+  margin-inline-start: 2rem;
+}
+
 ul li.long::marker {
   color: var(--gold);
 }
@@ -735,17 +746,18 @@ ul li.long::marker {
 }
 
 .ornament span {
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   letter-spacing: 0.4em;
   opacity: 0.8;
 }
 
 /* =================== KEY RESULTS STRIP =================== */
 .stats {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+
   gap: 1rem;
-  margin: 1.8rem 0 0.5rem;
 }
 
 .stat {
@@ -754,6 +766,7 @@ ul li.long::marker {
   padding: 1.3rem 1.1rem;
   background: var(--card-color-2);
   text-align: center;
+  flex-grow: 1;
 }
 
 .stat:hover {
@@ -790,7 +803,6 @@ pre {
   border-radius: 14px;
   background: var(--code-bg);
   border: 1px solid var(--border);
-  overflow: hidden;
   box-shadow: var(--shadow-sm);
 }
 
@@ -825,7 +837,6 @@ pre .hljs {
   line-height: 1.6;
   color: rgb(240, 226, 196);
   white-space: pre;
-  overflow-x: auto;
   border-radius: 0;
 }
 
@@ -850,7 +861,6 @@ code {
   justify-content: center;
   flex-wrap: wrap;
   border-radius: 18px;
-  overflow: hidden;
   border: 1px solid var(--border);
   background: var(--card-color-2);
   padding: 0.6rem;
@@ -934,8 +944,8 @@ footer > div {
 
 .social-card {
   flex: 1 1 240px;
+  justify-items: start;
   max-width: 320px;
-  text-align: left;
   padding: 1.4rem 1.5rem;
   border-radius: 18px;
   border: 1px solid var(--border);
