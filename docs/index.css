@@ -101,11 +101,17 @@
 }
 
 /* ---------------- Bilingual show / hide ---------------- */
-html[data-lang="en"] .lang-ar { display: none !important; }
-html[data-lang="ar"] .lang-en { display: none !important; }
+html[data-lang="en"] .lang-ar {
+  display: none !important;
+}
 
-.bi, .av {
- font-family: "Hanken Grotesk", system-ui, sans-serif
+html[data-lang="ar"] .lang-en {
+  display: none !important;
+}
+
+.bi,
+.av {
+  font-family: "Hanken Grotesk", system-ui, sans-serif
 }
 
 /* keep code, technical tokens & figures left-to-right even in Arabic */
@@ -118,20 +124,32 @@ code {
 }
 
 /* RTL refinements */
-html[data-lang="ar"] h2 { text-align: right; }
+html[data-lang="ar"] h2 {
+  text-align: right;
+}
+
 html[data-lang="ar"] h1.hero-title,
 html[data-lang="ar"] h2,
 html[data-lang="ar"] h3,
-html[data-lang="ar"] .footer-title { line-height: 1.45; }
-html[data-lang="ar"] h1.hero-title .accent { font-style: normal; }
-html[data-lang="ar"] .long { font-size: 1.16rem; line-height: 2; }
+html[data-lang="ar"] .footer-title {
+  line-height: 1.45;
+}
+
+html[data-lang="ar"] h1.hero-title .accent {
+  font-style: normal;
+}
+
+html[data-lang="ar"] .long {
+  font-size: 1.16rem;
+  line-height: 2;
+}
 
 /* Arabic shouldn't use Latin letter-spacing / uppercasing / mono face */
 html[data-lang="ar"] .section-num,
 html[data-lang="ar"] .hero-kicker,
 html[data-lang="ar"] .hero-affil,
 html[data-lang="ar"] .stat .label,
-html[data-lang="ar"] .socials-container > p,
+html[data-lang="ar"] .socials-container>p,
 html[data-lang="ar"] .scroll-hint,
 html[data-lang="ar"] .footer-foot {
   letter-spacing: 0 !important;
@@ -183,7 +201,7 @@ body {
     repeating-linear-gradient(45deg, var(--pattern-color) 0 1px, transparent 1px 22px),
     repeating-linear-gradient(-45deg, var(--pattern-color) 0 1px, transparent 1px 22px);
   -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
-          mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent 75%);
 }
 
 main,
@@ -212,7 +230,7 @@ nav.topnav {
 nav.topnav.scrolled {
   background: var(--nav-color);
   -webkit-backdrop-filter: saturate(180%) blur(14px);
-          backdrop-filter: saturate(180%) blur(14px);
+  backdrop-filter: saturate(180%) blur(14px);
   border-bottom: 1px solid var(--border);
   padding-top: 0.4rem;
   padding-bottom: 0.4rem;
@@ -322,7 +340,9 @@ button.lang-btn:hover {
   color: var(--link-hover-color);
 }
 
-html[data-lang="ar"] button.lang-btn .lang-btn-text { font-family: var(--font-body); }
+html[data-lang="ar"] button.lang-btn .lang-btn-text {
+  font-family: var(--font-body);
+}
 
 /* theme toggle */
 button.theme-btn {
@@ -420,7 +440,7 @@ h1.hero-title .accent {
   background: linear-gradient(100deg, var(--gold-deep), var(--gold), var(--gold-bright), var(--gold));
   background-size: 220% auto;
   -webkit-background-clip: text;
-          background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
   animation: shimmer 6s linear infinite;
@@ -586,6 +606,7 @@ section.card {
   overflow: hidden;
 
   opacity: 0;
+  transition: opacity 0.8s var(--ease);
 }
 
 section.card.in {
@@ -680,12 +701,14 @@ p {
   color: var(--text-color);
 }
 
-b, strong {
+b,
+strong {
   color: var(--text-color);
   font-weight: 700;
 }
 
-.long strong, .long b {
+.long strong,
+.long b {
   color: var(--gold-deep);
 }
 
@@ -781,7 +804,7 @@ ul li.long::marker {
   line-height: 1;
   background: linear-gradient(120deg, var(--gold-deep), var(--gold-bright));
   -webkit-background-clip: text;
-          background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   color: transparent;
 }
@@ -867,8 +890,8 @@ code {
   box-shadow: var(--shadow-sm);
 }
 
-.figure > img,
-.figure > video {
+.figure>img,
+.figure>video {
   width: 100%;
   height: auto;
   border-radius: 12px;
@@ -876,12 +899,17 @@ code {
   transition: transform 0.5s var(--ease);
 }
 
-.figure > img:hover {
+.figure>img:hover {
   transform: scale(1.015);
 }
 
-.img-small { max-width: 420px; }
-.img-medium { max-width: 620px; }
+.img-small {
+  max-width: 420px;
+}
+
+.img-medium {
+  max-width: 620px;
+}
 
 figcaption,
 .fig-cap {
@@ -905,7 +933,7 @@ footer {
   text-align: center;
 }
 
-footer > div {
+footer>div {
   max-width: var(--maxw);
   margin: 0 auto;
 }
@@ -925,7 +953,7 @@ footer > div {
   color: var(--muted-color);
 }
 
-.socials-container > p {
+.socials-container>p {
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 0.78rem;
@@ -957,7 +985,7 @@ footer > div {
   box-shadow: var(--shadow-sm);
 }
 
-.social-card > p {
+.social-card>p {
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 1.15rem;
@@ -968,7 +996,7 @@ footer > div {
   line-height: 2.3;
 }
 
-.socials-list > div {
+.socials-list>div {
   display: flex;
   align-items: center;
   gap: 0.6rem;
@@ -989,45 +1017,100 @@ footer > div {
 
 /* =================== ANIMATIONS =================== */
 @keyframes rise {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: none; }
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @keyframes shimmer {
-  to { background-position: 220% center; }
+  to {
+    background-position: 220% center;
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { box-shadow: 0 0 0 3px var(--glow); }
-  50%      { box-shadow: 0 0 0 7px transparent; }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 3px var(--glow);
+  }
+
+  50% {
+    box-shadow: 0 0 0 7px transparent;
+  }
 }
 
 @keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(5px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(5px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  section.card { opacity: 1; transform: none; }
+
+  section.card {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* =================== RESPONSIVE =================== */
 @media screen and (max-width: 760px) {
-  nav.topnav ul { gap: 0.7rem; }
-  nav.topnav a.nav-link { font-size: 0.74rem; }
-  .nav-cta span.cta-text { display: none; }
-  .nav-cta { padding: 0.5rem 0.76rem; }
-  .section-head { gap: 0.8rem; }
-  .section-icon { width: 46px; height: 46px; font-size: 1.25rem; }
+  nav.topnav ul {
+    gap: 0.7rem;
+  }
+
+  nav.topnav a.nav-link {
+    font-size: 0.74rem;
+  }
+
+  .nav-cta span.cta-text {
+    display: none;
+  }
+
+  .nav-cta {
+    padding: 0.5rem 0.76rem;
+  }
+
+  .section-head {
+    gap: 0.8rem;
+  }
+
+  .section-icon {
+    width: 46px;
+    height: 46px;
+    font-size: 1.25rem;
+  }
 }
 
 @media screen and (max-width: 520px) {
-  nav.topnav { flex-wrap: wrap; }
-  nav.topnav ul { order: 3; width: 100%; }
+  nav.topnav {
+    flex-wrap: wrap;
+  }
+
+  nav.topnav ul {
+    order: 3;
+    width: 100%;
+  }
 }
